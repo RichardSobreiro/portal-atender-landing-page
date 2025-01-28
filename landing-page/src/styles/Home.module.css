@@ -1,9 +1,9 @@
-/* Home.module.css */
-
+/* General Container */
 .container {
   width: 100%;
   min-height: 100vh;
   background-color: var(--color-background);
+  scroll-behavior: smooth; /* Enables smooth scrolling */
 }
 
 /* Hero Section */
@@ -18,12 +18,14 @@
     var(--color-primary) 50%,
     var(--color-background) 40%
   );
+  height: 100vh; /* Ensure the hero section takes full screen height */
+  flex-wrap: wrap; /* Allow items to wrap in smaller screens */
 }
 
-/* Left Side - Text */
 .heroText {
   color: #ffffff;
   max-width: 50%;
+  flex: 1;
 }
 
 .heroText h1 {
@@ -36,10 +38,9 @@
   font-size: var(--font-size-base);
   margin-top: 1rem;
   color: #ffd700; /* Gold color for strong contrast */
-  opacity: 0.9; /* Slight transparency for better readability */
+  opacity: 0.9;
 }
 
-/* Call-To-Action Button */
 .ctaButton {
   background-color: var(--color-accent);
   color: var(--color-surface);
@@ -58,7 +59,6 @@
   color: var(--color-text);
 }
 
-/* Right Side - Font Awesome Icons */
 .heroIcons {
   width: 50%;
   display: flex;
@@ -68,22 +68,165 @@
   padding-right: 2rem;
 }
 
-/* Increase Icon Size and Adjust Color */
 .icon {
   font-size: 10rem;
-  color: var(--color-primary); /* Make icons fully visible */
+  color: var(--color-primary);
 }
 
-/* Responsive Design */
+/* Teste Grátis Section */
+.testSection {
+  padding: 4rem 10%;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 80%,
+    var(--color-background) 20%
+  );
+  height: 100vh; /* Ensure the section has full height */
+}
+
+.testSection h2 {
+  font-size: var(--font-size-xl);
+  color: #ffd700;
+  font-weight: bold;
+}
+
+/* Planos Section */
+.planosSection {
+  padding: 4rem 10%;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 80%,
+    var(--color-background) 20%
+  );
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.planosContent {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.planosContent h1 {
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.featuresList {
+  list-style-type: none;
+  padding: 0;
+  margin: 2rem 0;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  align-self: center;
+}
+
+.featuresList li {
+  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+}
+
+.featuresList li .checkIcon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+/* Contato Section */
+.contatoSection {
+  padding: 4rem 10%;
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 80%,
+    var(--color-background) 20%
+  );
+  height: 100vh; /* Ensure the contact section takes full screen height */
+}
+
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.contactForm label {
+  font-weight: bold;
+}
+
+.contactForm input,
+.contactForm textarea {
+  padding: 1rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  transition: border 0.3s ease;
+}
+
+.contactForm input:focus,
+.contactForm textarea:focus {
+  border-color: var(--color-primary);
+}
+
+.contactForm button {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 30px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contactForm button:hover {
+  background-color: var(--color-highlight);
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.submitButton {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 30px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: var(--color-highlight);
+}
+
+/* Mobile View Adjustments */
 @media (max-width: 1024px) {
   .hero {
     flex-direction: column;
     text-align: center;
-    background: linear-gradient(
-      135deg,
-      var(--color-primary) 50%,
-      var(--color-background) 30%
-    );
+    height: 100vh; /* Ensure the contact section takes full screen height */
   }
 
   .heroText {
@@ -98,5 +241,35 @@
 
   .icon {
     font-size: 6rem;
+  }
+
+  .testSection h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  .planosSection {
+    height: 100vh; /* Ensure the contact section takes full screen height */
+  }
+
+  .planosContent h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .featuresList li {
+    font-size: var(--font-size-base);
+  }
+
+  .contactForm {
+    gap: 1.2rem;
+  }
+
+  .contactForm input,
+  .contactForm textarea {
+    font-size: 0.9rem;
+  }
+
+  /* Adjust for mobile in Contato section */
+  .contatoSection {
+    height: 100vh; /* Ensure the contact section takes full screen height */
   }
 }

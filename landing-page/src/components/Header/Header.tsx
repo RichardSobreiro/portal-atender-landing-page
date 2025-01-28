@@ -1,11 +1,18 @@
 /** @format */
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import styles from './Header.module.css';
 
-export default function Header() {
+export default function Header({
+  scrollToTesteGratis,
+  scrollToPlanos,
+  scrollToContato,
+}: {
+  scrollToTesteGratis: () => void;
+  scrollToPlanos: () => void;
+  scrollToContato: () => void;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -17,6 +24,7 @@ export default function Header() {
     setMenuOpen(false);
   };
 
+  // Scroll to top functionality
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     closeMenu();
@@ -65,29 +73,39 @@ export default function Header() {
           <button className={styles.linkButton} onClick={scrollToTop}>
             Início
           </button>
-          <Link
-            href="#teste-gratis"
-            className={styles.link}
-            onClick={closeMenu}
+          <button
+            className={styles.linkButton}
+            onClick={() => {
+              scrollToTesteGratis();
+              closeMenu();
+            }}
           >
             Teste Grátis
-          </Link>
-          <Link href="#precos" className={styles.link} onClick={closeMenu}>
-            Preços
-          </Link>
-          <Link href="#contato" className={styles.link} onClick={closeMenu}>
+          </button>
+          <button
+            className={styles.linkButton}
+            onClick={() => {
+              scrollToPlanos();
+              closeMenu();
+            }}
+          >
+            Planos
+          </button>
+          <button
+            className={styles.linkButton}
+            onClick={() => {
+              scrollToContato();
+              closeMenu();
+            }}
+          >
             Contato
-          </Link>
-          <Link href="#videos" className={styles.link} onClick={closeMenu}>
-            Vídeos
-          </Link>
-          <Link
-            href="#login"
+          </button>
+          <button
             className={`${styles.link} ${styles.login}`}
             onClick={closeMenu}
           >
             Login
-          </Link>
+          </button>
         </nav>
       </div>
     </header>
