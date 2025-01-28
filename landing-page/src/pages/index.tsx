@@ -1,22 +1,33 @@
 /** @format */
 
+import Header from '../components/Header/Header';
+import styles from '../styles/Home.module.css';
+import { FaMobileAlt, FaDesktop } from 'react-icons/fa';
+
 export default function Home() {
   return (
-    <main style={{ padding: "2rem", textAlign: "center" }}>
-      <h1>Bem-vindo ao Sistema de Gestão!</h1>
-      <p>Gerencie suas consultas e clientes com facilidade.</p>
-      <button
-        style={{
-          backgroundColor: "#0070f3",
-          color: "white",
-          padding: "0.5rem 1rem",
-          borderRadius: "4px",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        Saiba Mais
-      </button>
-    </main>
+    <div className={styles.container}>
+      {/* Header Component */}
+      <Header />
+
+      {/* Hero Section */}
+      <section className={styles.hero}>
+        {/* Left Content */}
+        <div className={styles.heroText}>
+          <h1>
+            O Melhor Sistema para Clínicas de Estética, Odontologia e Medicina
+            em geral.
+          </h1>
+          <p>Veja tudo que o Portal Atender faz por você!</p>
+          <button className={styles.ctaButton}>Testar Grátis</button>
+        </div>
+
+        {/* Right Icons */}
+        <div className={styles.heroIcons}>
+          <FaMobileAlt className={styles.icon} />
+          <FaDesktop className={styles.icon} />
+        </div>
+      </section>
+    </div>
   );
 }

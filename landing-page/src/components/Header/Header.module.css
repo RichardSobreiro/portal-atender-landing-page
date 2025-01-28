@@ -1,13 +1,167 @@
-/** @format */
+/* Header.module.css */
 
+/* Header container */
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-muted-text);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   padding: 1rem 2rem;
-  background-color: #0070f3;
-  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
+
+/* Ensures everything is centered inside the header */
+.headerContainer {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+
+/* Logo - Adds spacing so it's not too close to "Início" */
 .logo {
-  font-size: 1.5rem;
+  font-size: var(--font-size-lg);
   font-weight: bold;
+  color: var(--color-primary);
+  flex: 0 0 auto;
+  margin-right: 2rem;
+}
+
+/* MOBILE NAVIGATION - Hidden by default */
+.nav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 70%;
+  height: 100vh;
+  background-color: var(--color-surface);
+  box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 2rem;
+  transition: right 0.3s ease-in-out;
+}
+
+/* Show menu when open */
+.navOpen {
+  right: 0;
+}
+
+/* Close Button (Inside the Menu, Top-Right) */
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  align-self: flex-end; /* Aligns the close button to the right */
+  margin-bottom: 1rem;
+}
+
+/* Ensures "Início" aligns with the rest of the menu */
+.linkButton {
+  all: unset;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    text-decoration 0.3s ease;
+  white-space: nowrap;
+  padding: 0;
+  line-height: 1;
+  display: block;
+  width: 100%;
+  text-align: left; /* Ensures alignment with other links */
+}
+
+/* Ensures all menu options, including "Início," are correctly spaced */
+.link,
+.linkButton {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition:
+    color 0.3s ease,
+    text-decoration 0.3s ease;
+  white-space: nowrap;
+  padding: 0.5rem 0;
+  line-height: 1;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+/* Hover effect */
+.link:hover,
+.linkButton:hover {
+  color: var(--color-primary);
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+/* Login link */
+.login {
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.login:hover {
+  color: var(--color-secondary);
+}
+
+/* HAMBURGER MENU BUTTON (Only visible on mobile) */
+.hamburger {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  display: block;
+}
+
+/* Desktop navigation */
+@media (min-width: 1024px) {
+  .headerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Hide the hamburger and close button on desktop */
+  .hamburger,
+  .closeButton {
+    display: none !important;
+  }
+
+  /* Desktop navigation layout */
+  .nav {
+    position: static;
+    width: auto;
+    height: auto;
+    background: none;
+    box-shadow: none;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0;
+    align-items: center;
+  }
+
+  .navOpen {
+    right: auto;
+  }
 }
