@@ -83,6 +83,10 @@
     var(--color-background) 20%
   );
   height: 100vh; /* Ensure the section has full height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .testSection h2 {
@@ -199,6 +203,12 @@
   background-color: var(--color-highlight);
 }
 
+.contactFormRow {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .error {
   color: red;
   font-size: 0.9rem;
@@ -224,9 +234,11 @@
 /* Mobile View Adjustments */
 @media (max-width: 1024px) {
   .hero {
+    display: flex;
+    justify-content: center;
     flex-direction: column;
     text-align: center;
-    height: 100vh; /* Ensure the contact section takes full screen height */
+    height: 100vh;
   }
 
   .heroText {
@@ -240,7 +252,7 @@
   }
 
   .icon {
-    font-size: 6rem;
+    font-size: 3rem;
   }
 
   .testSection h2 {
@@ -266,6 +278,12 @@
   .contactForm input,
   .contactForm textarea {
     font-size: 0.9rem;
+  }
+
+  .contactFormRow {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   /* Adjust for mobile in Contato section */

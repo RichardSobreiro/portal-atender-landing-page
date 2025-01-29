@@ -45,7 +45,7 @@ h1 {
 
 h2 {
   font-size: var(--font-size-lg);
-  color: var(--color-primary);
+  color: var(--color-surface);
 }
 
 p {

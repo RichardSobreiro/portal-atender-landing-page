@@ -6,11 +6,16 @@ import styles from '../styles/Home.module.css';
 import { FaMobileAlt, FaDesktop, FaCheckCircle } from 'react-icons/fa';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import Footer from '@/components/Footer/Footer';
+import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast
+import PhoneInput from 'react-phone-number-input'; // Import react-phone-number-input
+import 'react-phone-number-input/style.css'; // Import CSS for the phone input style
 
 const contactSchema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
   email: Yup.string().email('Email inválido').required('Email é obrigatório'),
-  phone: Yup.string().required('Telefone é obrigatório'),
+  phone: Yup.string(),
   message: Yup.string().required('Mensagem é obrigatória'),
 });
 
@@ -46,19 +51,33 @@ export default function Home() {
     }
   };
 
-  const handleFormSubmit = async (values: any) => {
-    const response = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
+  const handleFormSubmit = async (values: any, { resetForm }: any) => {
+    try {
+      const response = await fetch(
+        'https://ol0wnbyn64.execute-api.sa-east-1.amazonaws.com/prod/landing-page-contact-form-send-email',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
-    if (response.ok) {
-      alert('Mensagem enviada com sucesso!');
-    } else {
-      alert('Ocorreu um erro ao enviar a mensagem.');
+      if (response.ok) {
+        toast.success('Mensagem enviada com sucesso!', {
+          position: 'top-center', // Correct way to set position
+        });
+        resetForm(); // Clear the form fields after successful submission
+      } else {
+        toast.error('Ocorreu um erro ao enviar a mensagem.', {
+          position: 'top-center', // Correct way to set position
+        });
+      }
+    } catch (error) {
+      toast.error('Erro ao enviar a mensagem. Tente novamente.', {
+        position: 'top-center', // Correct way to set position
+      });
     }
   };
 
@@ -75,7 +94,7 @@ export default function Home() {
         <div className={styles.heroText}>
           <h1>
             O Melhor Sistema para Clínicas de Estética, Odontologia e Medicina
-            em geral.
+            em geral com gestão da sua conta conta Whatsapp Business incluso.
           </h1>
           <p>Veja tudo que o Portal Atender faz por você!</p>
           <button className={styles.ctaButton} onClick={scrollToTesteGratis}>
@@ -95,13 +114,16 @@ export default function Home() {
         className={styles.testSection}
         ref={testeGratisSection}
       >
-        <h2>Em breve</h2>
+        <h2>
+          Teste Grátis Por 14 dias com gestão do Whatsapp Business incluso
+        </h2>
+        <h2>Em Breve</h2>
       </section>
 
       {/* Planos Section */}
       <section id="planos" className={styles.planosSection} ref={planosSection}>
         <div className={styles.planosContent}>
-          <h1>Plano Único por R$ 49,90</h1>
+          <h2>Plano Único por R$ 49,90</h2>
           <ul className={styles.featuresList}>
             <li>
               <FaCheckCircle className={styles.checkIcon} /> Pacientes
@@ -155,41 +177,54 @@ export default function Home() {
         className={styles.contatoSection}
         ref={contatoSection}
       >
-        <h1>Contato</h1>
+        <h2>Contato</h2>
         <Formik
           initialValues={{ name: '', email: '', phone: '', message: '' }}
           validationSchema={contactSchema}
           onSubmit={handleFormSubmit}
         >
           <Form className={styles.contactForm}>
-            <div>
-              <label htmlFor="name">Nome</label>
-              <Field type="text" id="name" name="name" />
-              <ErrorMessage
-                name="name"
-                component="div"
-                className={styles.error}
-              />
-            </div>
+            <div className={styles.contactFormRow}>
+              <div>
+                <label htmlFor="name">Nome</label>
+                <Field type="text" id="name" name="name" />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className={styles.error}
+                />
+              </div>
 
-            <div>
-              <label htmlFor="email">Email</label>
-              <Field type="email" id="email" name="email" />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className={styles.error}
-              />
-            </div>
+              <div>
+                <label htmlFor="email">Email</label>
+                <Field type="email" id="email" name="email" />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className={styles.error}
+                />
+              </div>
 
-            <div>
-              <label htmlFor="phone">Telefone</label>
-              <Field type="text" id="phone" name="phone" />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className={styles.error}
-              />
+              <div>
+                <label htmlFor="phone">Telefone</label>
+                <PhoneInput
+                  international
+                  defaultCountry="BR" // Set Brazil as the default country
+                  id="phone"
+                  name="phone"
+                  value={''} // Use the Formik value here
+                  onChange={(value: string | undefined) => {
+                    // Ensure the value is a string before updating Formik
+                    const formikField = document.getElementById('phone') as any;
+                    formikField.value = value ? String(value) : '';
+                  }}
+                />
+                <ErrorMessage
+                  name="phone"
+                  component="div"
+                  className={styles.error}
+                />
+              </div>
             </div>
 
             <div>
@@ -208,6 +243,11 @@ export default function Home() {
           </Form>
         </Formik>
       </section>
+
+      <Footer />
+
+      {/* ToastContainer for the toast notifications */}
+      <ToastContainer />
     </div>
   );
 }
