@@ -1,6 +1,9 @@
-# Allow all search engine bots to crawl everything
+# *
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Host
+Host: https://portalatender.com.br
+
+# Sitemaps
 Sitemap: https://portalatender.com.br/sitemap.xml
