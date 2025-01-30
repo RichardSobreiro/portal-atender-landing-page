@@ -29,6 +29,7 @@ export default function Document() {
         <meta property="og:url" content="https://portalatender.com.br" />
         <meta property="og:image" content="/logo.png" />
         <link rel="icon" href="/favicon.png" />
+        <link rel="canonical" href="https://portalatender.com.br/"></link>
       </Head>
       <body>
         <Main />
