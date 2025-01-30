@@ -19,7 +19,26 @@ const contactSchema = Yup.object().shape({
   message: Yup.string().required('Mensagem é obrigatória'),
 });
 
-export default function Home() {
+export const getServerSideProps = async () => {
+  const title = 'Portal Atender';
+  const description =
+    'O Melhor Sistema para Clínicas de Estética, Odontologia e Medicina em geral com gestão do seu Whatsapp Business.';
+
+  return {
+    props: {
+      title,
+      description,
+    },
+  };
+};
+
+export default function Home({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   const testeGratisSection = useRef<HTMLDivElement | null>(null);
   const planosSection = useRef<HTMLDivElement | null>(null);
   const contatoSection = useRef<HTMLDivElement | null>(null);
@@ -92,11 +111,8 @@ export default function Home() {
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroText}>
-          <h1>
-            O Melhor Sistema para Clínicas de Estética, Odontologia e Medicina
-            em geral com gestão da sua conta conta Whatsapp Business incluso.
-          </h1>
-          <p>Veja tudo que o Portal Atender faz por você!</p>
+          <h1>{title}</h1>
+          <p>{description}</p>
           <button className={styles.ctaButton} onClick={scrollToTesteGratis}>
             Testar Grátis
           </button>
