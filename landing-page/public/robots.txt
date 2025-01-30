@@ -1,4 +1,6 @@
+# Allow all search engine bots to crawl everything
 User-agent: *
-Disallow: /private/
 Allow: /
+
+# Sitemap location
 Sitemap: https://portalatender.com.br/sitemap.xml
