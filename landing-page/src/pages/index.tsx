@@ -19,7 +19,8 @@ const contactSchema = Yup.object().shape({
   message: Yup.string().required('Mensagem é obrigatória'),
 });
 
-export const getServerSideProps = async () => {
+// Switch from getServerSideProps to getStaticProps
+export const getStaticProps = async () => {
   const title = 'Portal Atender';
   const description =
     'O Melhor Sistema para Clínicas de Estética, Odontologia e Medicina em geral com gestão do seu Whatsapp Business.';
