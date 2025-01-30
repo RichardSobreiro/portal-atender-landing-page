@@ -7,10 +7,10 @@ import { FaMobileAlt, FaDesktop, FaCheckCircle } from 'react-icons/fa';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import Footer from '@/components/Footer/Footer';
-import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast
-import PhoneInput from 'react-phone-number-input'; // Import react-phone-number-input
-import 'react-phone-number-input/style.css'; // Import CSS for the phone input style
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 const contactSchema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
@@ -19,7 +19,6 @@ const contactSchema = Yup.object().shape({
   message: Yup.string().required('Mensagem é obrigatória'),
 });
 
-// Switch from getServerSideProps to getStaticProps
 export const getStaticProps = async () => {
   const title = 'Portal Atender';
   const description =
@@ -86,17 +85,17 @@ export default function Home({
 
       if (response.ok) {
         toast.success('Mensagem enviada com sucesso!', {
-          position: 'top-center', // Correct way to set position
+          position: 'top-center',
         });
-        resetForm(); // Clear the form fields after successful submission
+        resetForm();
       } else {
         toast.error('Ocorreu um erro ao enviar a mensagem.', {
-          position: 'top-center', // Correct way to set position
+          position: 'top-center',
         });
       }
     } catch (error) {
       toast.error('Erro ao enviar a mensagem. Tente novamente.', {
-        position: 'top-center', // Correct way to set position
+        position: 'top-center',
       });
     }
   };
@@ -226,12 +225,11 @@ export default function Home({
                 <label htmlFor="phone">Telefone</label>
                 <PhoneInput
                   international
-                  defaultCountry="BR" // Set Brazil as the default country
+                  defaultCountry="BR"
                   id="phone"
                   name="phone"
-                  value={''} // Use the Formik value here
+                  value={''}
                   onChange={(value: string | undefined) => {
-                    // Ensure the value is a string before updating Formik
                     const formikField = document.getElementById('phone') as any;
                     formikField.value = value ? String(value) : '';
                   }}

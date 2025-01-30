@@ -51,10 +51,12 @@ export default function Header({
 
   return (
     <header className={styles.header}>
-      <div className={styles.headerContainer}>
+      <div className={styles.logoContainer}>
         {/* LOGO */}
         <div className={styles.logo}>Portal Atender</div>
+      </div>
 
+      <div className={styles.navContainer}>
         {/* HAMBURGER MENU BUTTON (Mobile Only) */}
         <button className={styles.hamburger} onClick={toggleMenu}>
           <FaBars />

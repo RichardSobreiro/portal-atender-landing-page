@@ -15,23 +15,25 @@
   width: 100%;
 }
 
-/* Ensures everything is centered inside the header */
-.headerContainer {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 auto;
+/* Logo container - left aligned */
+.logoContainer {
+  flex: 0 1 auto;
+  padding-left: 1rem; /* Add some padding for spacing */
 }
 
-/* Logo - Adds spacing so it's not too close to "Início" */
+/* Logo */
 .logo {
   font-size: var(--font-size-lg);
   font-weight: bold;
   color: var(--color-primary);
-  flex: 0 0 auto;
-  margin-right: 2rem;
+}
+
+/* Nav container - takes 90% of the header width */
+.navContainer {
+  flex: 1 1 90%; /* Makes nav container take 90% width */
+  display: flex;
+  justify-content: end; /* Center nav items */
+  align-items: end;
 }
 
 /* MOBILE NAVIGATION - Hidden by default */
@@ -137,7 +139,7 @@
 @media (min-width: 1024px) {
   .headerContainer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Move logo to the far left */
     align-items: center;
   }
 
@@ -155,7 +157,7 @@
     background: none;
     box-shadow: none;
     flex-direction: row;
-    justify-content: center;
+    justify-content: center; /* Keep nav centered */
     gap: 2rem;
     padding: 0;
     align-items: center;
@@ -163,5 +165,13 @@
 
   .navOpen {
     right: auto;
+  }
+
+  /* Nav container - takes 90% of the header width */
+  .navContainer {
+    flex: 1 1 90%; /* Makes nav container take 90% width */
+    display: flex;
+    justify-content: center; /* Center nav items */
+    align-items: center;
   }
 }

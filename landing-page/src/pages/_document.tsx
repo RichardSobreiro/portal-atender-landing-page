@@ -5,6 +5,9 @@ export default function Document() {
     <Html lang="pt-br">
       <Head>
         {/* Meta tags for SEO */}
+        <title>
+          Portal Atender - O Melhor Sistema para Clínicas e Consultórios
+        </title>
         <meta
           name="description"
           content="Portal Atender - Sistema de Gestão para Clínicas de Estética, Odontologia e Medicina."
@@ -25,7 +28,7 @@ export default function Document() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://portalatender.com.br" />
         <meta property="og:image" content="/logo.png" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <body>
         <Main />
