@@ -1,6 +1,7 @@
 /** @format */
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router'; // ✅ Added for navigation
 import { FaBars, FaTimes } from 'react-icons/fa';
 import styles from './Header.module.css';
 
@@ -15,6 +16,7 @@ export default function Header({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter(); // ✅ Initialize Next.js router
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -102,11 +104,16 @@ export default function Header({
           >
             Contato
           </button>
+
+          {/* ✅ LOGIN BUTTON NOW NAVIGATES TO /entrar */}
           <button
             className={`${styles.link} ${styles.login}`}
-            onClick={closeMenu}
+            onClick={() => {
+              closeMenu();
+              router.push('/entrar'); // ✅ Navigate to the login page
+            }}
           >
-            Login
+            Entrar
           </button>
         </nav>
       </div>

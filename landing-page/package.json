@@ -10,6 +10,10 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.7.9",
     "formik": "^2.4.6",
     "next": "15.1.6",
@@ -30,6 +34,7 @@
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-input-mask": "^3.0.6",
     "@types/react-phone-number-input": "^3.0.17",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",

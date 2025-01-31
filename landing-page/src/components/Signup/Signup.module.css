@@ -1,0 +1,92 @@
+/** @format */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--color-background);
+  font-family: var(--font-family);
+}
+
+.titleContainer {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.titlePage {
+  color: var(--color-primary);
+  font-size: var(--font-size-xl);
+  border-bottom: 3px solid var(--color-primary);
+  border-radius: 5px;
+  padding-bottom: 0.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 360px;
+}
+
+.form label {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: var(--font-size-base);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.errorMessage {
+  color: var(--color-accent);
+  font-size: var(--font-size-base);
+  margin-bottom: 10px;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.button {
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 6rem;
+}
+
+.submitButton {
+  background-color: var(--color-primary);
+}
+
+.submitButton:hover {
+  background-color: var(--color-secondary);
+}
+
+.cancelButton {
+  background-color: var(--color-accent);
+}
+
+.cancelButton:hover {
+  background-color: #e63946;
+}
