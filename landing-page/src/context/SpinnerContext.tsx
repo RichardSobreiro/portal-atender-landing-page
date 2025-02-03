@@ -1,5 +1,5 @@
 /** @format */
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface SpinnerContextType {
   showSpinner: () => void;
@@ -27,7 +27,7 @@ export const SpinnerProvider: React.FC<{ children: ReactNode }> = ({
 export const useSpinner = () => {
   const context = useContext(SpinnerContext);
   if (!context) {
-    throw new Error("useSpinner must be used within a SpinnerProvider");
+    throw new Error('useSpinner must be used within a SpinnerProvider');
   }
   return context;
 };

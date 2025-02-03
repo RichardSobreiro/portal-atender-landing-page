@@ -1,0 +1,32 @@
+/** @format */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+.sideMenuContainer {
+  flex: 0 0 250px;
+  background-color: var(--primary-color);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: var(--background-color);
+}
+
+@media (max-width: 768px) {
+  .sideMenuContainer {
+    flex: 0;
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+}

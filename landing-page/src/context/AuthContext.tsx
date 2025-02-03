@@ -7,8 +7,8 @@ import React, {
   ReactNode,
   useEffect,
   useCallback,
-} from "react";
-import axios from "axios";
+} from 'react';
+import axios from 'axios';
 
 interface BearerToken {
   username: string;
@@ -33,15 +33,15 @@ interface AuthContextType {
 }
 
 const decodeJwt = (token: string) => {
-  const base64Url = token.split(".")[1]; // get the payload part
-  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const base64Url = token.split('.')[1]; // get the payload part
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
   const jsonPayload = decodeURIComponent(
     atob(base64)
-      .split("")
+      .split('')
       .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       })
-      .join("")
+      .join('')
   );
 
   return JSON.parse(jsonPayload);
@@ -56,13 +56,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const setAuthenticationState = useCallback(
     (accessToken: string, refreshToken: string, rememberMe: boolean) => {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       if (rememberMe) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
       } else {
-        sessionStorage.setItem("accessToken", accessToken);
-        sessionStorage.setItem("refreshToken", refreshToken);
+        sessionStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
       }
       const token: BearerToken = decodeJwt(accessToken);
       const username: string = token.username;
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = async (credentials: LoginCredentials) => {
     try {
-      const response = await axios.post("http://localhost:3001/auth/login", {
+      const response = await axios.post('http://localhost:3000/auth/signin', {
         email: credentials.username,
         password: credentials.password,
       });
@@ -83,28 +83,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         throw new Error(
-          error.response.data.message || "Unknown error occurred"
+          error.response.data.message ||
+            'Ocorreu um erro inesperado. Tente novamente.'
         );
       } else {
-        throw new Error("An unexpected error occurred");
+        throw new Error('Ocorreu um erro inesperado. Tente novamente.');
       }
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
 
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
 
     setUser(null);
-    delete axios.defaults.headers.common["Authorization"];
+    delete axios.defaults.headers.common['Authorization'];
   };
 
   useEffect(() => {
-    const accessTokenLocalStorage = localStorage.getItem("accessToken");
-    const refreshTokenLocalStorage = localStorage.getItem("refreshToken");
+    const accessTokenLocalStorage = localStorage.getItem('accessToken');
+    const refreshTokenLocalStorage = localStorage.getItem('refreshToken');
     if (accessTokenLocalStorage && refreshTokenLocalStorage) {
       setAuthenticationState(
         accessTokenLocalStorage,
@@ -112,8 +113,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         true
       );
     } else {
-      const accessTokenSessionStorage = sessionStorage.getItem("accessToken");
-      const refreshTokenSessionStorage = sessionStorage.getItem("refreshToken");
+      const accessTokenSessionStorage = sessionStorage.getItem('accessToken');
+      const refreshTokenSessionStorage = sessionStorage.getItem('refreshToken');
       if (accessTokenSessionStorage && refreshTokenSessionStorage) {
         setAuthenticationState(
           accessTokenSessionStorage,
@@ -136,7 +137,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

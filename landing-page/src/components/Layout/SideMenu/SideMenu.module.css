@@ -1,0 +1,135 @@
+.sideMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: var(--color-primary); /* Use primary color as background */
+  color: var(--color-surface); /* Use surface color for text */
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideMenu.open {
+  transform: translateX(0);
+}
+
+.hamburger {
+  display: block;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  font-size: 24px;
+  color: var(--color-text); /* Ensure the icon contrasts with the menu */
+  cursor: pointer;
+}
+
+.menuItem {
+  list-style: none;
+  margin-bottom: 15px;
+}
+
+.menuLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-surface); /* Make links match the light background color */
+  text-decoration: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.menuLink:hover {
+  color: var(--color-highlight); /* Highlight color on hover */
+}
+
+.icon {
+  font-size: 20px;
+  width: 30px;
+  text-align: center;
+}
+
+.subMenu {
+  list-style: none;
+  padding-left: 30px;
+  margin-top: 5px;
+}
+
+.subMenuItem {
+  margin: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subMenuItem::before {
+  content: '•';
+  font-size: 14px;
+  color: var(--color-surface); /* Keep consistent with text */
+}
+
+.subMenuItem a {
+  color: var(--color-surface);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  display: block;
+}
+
+.subMenuItem a:hover {
+  color: var(--color-highlight); /* Secondary color on hover */
+  text-decoration: underline;
+}
+
+.logoutContainer {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding: 10px;
+  color: var(--color-background);
+  cursor: pointer;
+  font-size: 18px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.logoutContainer:hover {
+  background-color: var(--color-muted-text);
+  color: var(--color-background);
+}
+
+.logoutIcon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .sideMenu {
+    transform: translateX(-100%);
+  }
+
+  .sideMenu.open {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .sideMenu {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
