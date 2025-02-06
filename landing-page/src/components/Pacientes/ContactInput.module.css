@@ -1,0 +1,142 @@
+/** @format */
+
+.contactContainer {
+  flex: 1;
+  min-width: 300px;
+}
+
+.section {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-muted-text);
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.legend {
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.contactRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Input Group: Dropdown and Input together */
+.inputGroup {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.select {
+  width: 120px;
+  padding: 8px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.inputContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 5px;
+}
+
+/* Icon Button */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Favorite Star - Yellow when selected */
+.favorite {
+  color: var(--color-highlight);
+}
+
+/* Remove Button - Red */
+.removeIcon {
+  color: var(--color-accent);
+}
+
+/* Add Button */
+.addButton {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Desktop Layout: All elements in a single row */
+@media (min-width: 1024px) {
+  .contactRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .iconContainer {
+    display: flex;
+    gap: 10px;
+    width: auto;
+    margin-top: 0;
+  }
+}
+
+/* Mobile Layout: Dropdown and Input in Same Row, Icons Below */
+@media (max-width: 1024px) {
+  .contactRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .inputGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .iconContainer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .addButton {
+    width: 100%;
+    max-width: none; /* Ensures it's consistent with other buttons */
+  }
+}

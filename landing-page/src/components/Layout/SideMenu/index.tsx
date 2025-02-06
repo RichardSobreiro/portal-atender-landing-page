@@ -1,46 +1,48 @@
 /** @format */
 
-import React, { useState, useEffect, useRef } from "react";
-import styles from "./SideMenu.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect, useRef } from 'react';
+import styles from './SideMenu.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBars,
   faTimes,
-  faBox,
-  faShoppingCart,
-  faTruck,
-  faFileInvoiceDollar,
-  faWarehouse,
-  faUsers,
-  faUserTie,
-  faBuilding,
-  faSignOutAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
+  faChartLine, // Dashboard
+  faUserInjured, // Pacientes
+  faCalendarAlt, // Calendário
+  faStethoscope, // Atendimentos
+  faBullhorn, // Marketing
+  faBoxes, // Estoque
+  faMoneyBillWave, // Financeiro
+  faFileContract, // Vendas e Orçamentos
+  faClinicMedical, // Minha Clínica
+  faSignOutAlt, // Logout
+} from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 const menuItems = [
   {
-    label: "Empresa",
-    link: "/empresa/canais",
-    icon: faBuilding,
-    subItems: [
-      { label: "Canais de Vendas", link: "/empresa/canais" },
-      { label: "Localizações", link: "/empresa/localizacoes" },
-    ],
+    label: 'Dashboard',
+    link: '/dashboard',
+    icon: faChartLine,
   },
   {
-    label: "Produtos",
-    link: "/produtos",
-    icon: faBox,
-    subItems: [{ label: "Categorias", link: "/produtos/categorias" }],
+    label: 'Pacientes',
+    link: '/pacientes',
+    icon: faUserInjured,
+    subItems: [{ label: 'Anamneses', link: '/pacientes/anamneses' }],
   },
-  { label: "Estoque", link: "/", icon: faWarehouse },
-  { label: "Pedidos", link: "/", icon: faShoppingCart },
-  { label: "Expedição", link: "/", icon: faTruck },
-  { label: "Faturamento", link: "/", icon: faFileInvoiceDollar },
-  { label: "Usuários", link: "/", icon: faUsers },
-  { label: "RH", link: "/", icon: faUserTie },
+  { label: 'Calendário', link: '/dashboard', icon: faCalendarAlt },
+  { label: 'Atendimentos', link: '/dashboard', icon: faStethoscope },
+  { label: 'Marketing', link: '/dashboard', icon: faBullhorn },
+  { label: 'Estoque', link: '/dashboard', icon: faBoxes },
+  { label: 'Financeiro', link: '/dashboard', icon: faMoneyBillWave },
+  {
+    label: 'Vendas e Orçamentos',
+    link: '/dashboard',
+    icon: faFileContract,
+  },
+  { label: 'Minha Clínica', link: '/dashboard', icon: faClinicMedical },
 ];
 
 const SideMenu: React.FC = () => {
@@ -67,13 +69,13 @@ const SideMenu: React.FC = () => {
 
   useEffect(() => {
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isOpen]);
 
@@ -93,7 +95,7 @@ const SideMenu: React.FC = () => {
 
       <nav
         ref={sideMenuRef}
-        className={`${styles.sideMenu} ${isOpen ? styles.open : ""}`}
+        className={`${styles.sideMenu} ${isOpen ? styles.open : ''}`}
       >
         <ul>
           {menuItems.map((item, index) => (

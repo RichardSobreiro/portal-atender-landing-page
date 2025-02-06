@@ -1,0 +1,106 @@
+.section {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-muted-text);
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.legend {
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.addressContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.addressRow {
+  padding: 10px;
+  border-bottom: 1px solid var(--color-muted-text);
+  margin-bottom: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.actionIcons {
+  display: flex;
+  gap: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* Ensure proper spacing for selects and inputs */
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+/* Favorite and Remove Icons */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.iconButtonRed {
+  color: red;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.favorite {
+  color: var(--color-highlight);
+}
+
+.addButton {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: auto; /* Auto width like the other buttons */
+  max-width: 220px; /* Ensures it's consistent with other buttons */
+  text-align: center;
+}
+
+/* 📌 Responsive Layout Adjustments */
+
+/* Tablet View (2 Columns) */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile View (1 Column) */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .addButton {
+    width: 100%;
+    max-width: none; /* Ensures it's consistent with other buttons */
+  }
+}

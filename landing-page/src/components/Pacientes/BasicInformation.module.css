@@ -1,0 +1,126 @@
+/** @format */
+
+.errorMessage {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  font-weight: bold;
+}
+
+.section {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-muted-text);
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.legend {
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 15px;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.select:focus {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.grayedOut {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.fullWidthInputGroup {
+  grid-column: span 3;
+}
+
+.fullWidthInputGroup label {
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 8px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fullWidthInputGroup {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .titleContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fullWidthInputGroup {
+    grid-column: span 1;
+  }
+}
