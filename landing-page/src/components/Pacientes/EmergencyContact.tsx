@@ -11,6 +11,49 @@ interface EmergencyContactProps {
 const EmergencyContact: React.FC<EmergencyContactProps> = ({
   setFieldValue,
 }) => {
+  const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+
+    value = value.slice(0, 11);
+
+    // Allow full deletion
+    if (value.length === 0) {
+      setFieldValue('emergencyPhone', '');
+      return;
+    }
+
+    // Prevent forcing a space if the user is deleting
+    if (value.length < 2) {
+      setFieldValue('emergencyPhone', `(${value}`);
+      return;
+    }
+
+    // Format landline (10 digits) and mobile (11 digits)
+    if (value.length <= 10) {
+      value = value.replace(
+        /^(\d{2})(\d{0,4})(\d{0,4})/,
+        (match, p1, p2, p3) => {
+          let formatted = `(${p1}`;
+          if (p2) formatted += `) ${p2}`;
+          if (p3) formatted += `-${p3}`;
+          return formatted;
+        }
+      );
+    } else {
+      value = value.replace(
+        /^(\d{2})(\d{0,5})(\d{0,4})/,
+        (match, p1, p2, p3) => {
+          let formatted = `(${p1}`;
+          if (p2) formatted += `) ${p2}`;
+          if (p3) formatted += `-${p3}`;
+          return formatted;
+        }
+      );
+    }
+
+    setFieldValue('emergencyPhone', value);
+  };
+
   return (
     <fieldset className={styles.section}>
       <legend className={styles.legend}>Contato de Emergência</legend>
@@ -53,9 +96,7 @@ const EmergencyContact: React.FC<EmergencyContactProps> = ({
             id="emergencyPhone"
             name="emergencyPhone"
             className={styles.input}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFieldValue('emergencyPhone', e.target.value)
-            }
+            onChange={handlePhoneInput}
           />
         </div>
 
@@ -65,7 +106,7 @@ const EmergencyContact: React.FC<EmergencyContactProps> = ({
             as="select"
             id="bloodType"
             name="bloodType"
-            className={styles.input}
+            className={styles.select}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
               setFieldValue('bloodType', e.target.value)
             }

@@ -52,9 +52,9 @@
 }
 
 .addButton {
-  background-color: var(--color-secondary);
-  color: var(--color-surface);
-  border: none;
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
   border-radius: 6px;
   padding: 8px 12px;
   cursor: pointer;
@@ -65,5 +65,10 @@
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .addButton {
+    width: 100%;
+    max-width: none; /* Ensures it's consistent with other buttons */
   }
 }

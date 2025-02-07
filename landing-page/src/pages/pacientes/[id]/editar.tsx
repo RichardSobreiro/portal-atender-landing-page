@@ -1,10 +1,21 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+/** @format */
 
-export default function Document() {
+import React from 'react';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import Layout from '@/components/Layout';
+import UpdatePatient from '@/components/Pacientes/editar';
+import { useRouter } from 'next/router';
+
+const EditarPaciente: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
-    <Html lang="pt-br">
+    <>
       <Head>
-        {/* Meta tags for SEO */}
+        <title>
+          Portal Atender - O Melhor Sistema para Clínicas e Consultórios
+        </title>
         <meta
           name="description"
           content="Portal Atender - Sistema de Gestão para Clínicas de Estética, Odontologia e Medicina."
@@ -27,11 +38,13 @@ export default function Document() {
         <meta property="og:image" content="/logo.png" />
         <link rel="icon" href="/favicon.png" />
         <link rel="canonical" href="https://portalatender.com.br/"></link>
+        <meta name="language" content="pt-BR" />
       </Head>
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
+      <Layout renderSideMenu={true}>
+        <UpdatePatient patientId={id as string} />
+      </Layout>
+    </>
   );
-}
+};
+
+export default EditarPaciente;

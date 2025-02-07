@@ -11,6 +11,77 @@ interface ResponsibleContactsProps {
   setFieldValue: (field: string, value: any) => void;
 }
 
+const formatCpfCnpj = (value: string) => {
+  const digits = value.replace(/\D/g, ''); // Remove non-numeric characters
+
+  if (digits.length <= 11) {
+    // CPF Format: 999.999.999-99
+    return digits
+      .replace(/^(\d{3})(\d)/, '$1.$2')
+      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/, '.$1-$2');
+  } else {
+    // CNPJ Format: 99.999.999/9999-99 (Max 14 digits)
+    return digits
+      .slice(0, 14) // Restrict to 14 digits
+      .replace(/^(\d{2})(\d)/, '$1.$2')
+      .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/\.(\d{3})(\d)/, '.$1/$2')
+      .replace(/\/(\d{4})(\d)/, '/$1-$2');
+  }
+};
+
+const handleCpfCnpjChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  index: number,
+  setFieldValue: (field: string, value: any) => void
+) => {
+  let value = e.target.value;
+  setFieldValue(`responsaveis[${index}].cpfCnpj`, formatCpfCnpj(value));
+};
+
+const handlePhoneInput = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  index: number,
+  setFieldValue: (field: string, value: any) => void
+) => {
+  let value = e.target.value.replace(/\D/g, ''); // Remove all non-numeric characters
+
+  // Enforce 11-digit limit
+  value = value.slice(0, 11);
+
+  // Allow full deletion
+  if (value.length === 0) {
+    setFieldValue(`responsaveis[${index}].phone`, '');
+    return;
+  }
+
+  // Prevent forcing a space if the user is deleting
+  if (value.length < 2) {
+    setFieldValue(`responsaveis[${index}].phone`, `(${value}`);
+    return;
+  }
+
+  // Format landline (10 digits) and mobile (11 digits)
+  if (value.length <= 10) {
+    value = value.replace(/^(\d{2})(\d{0,4})(\d{0,4})/, (match, p1, p2, p3) => {
+      let formatted = `(${p1}`;
+      if (p2) formatted += `) ${p2}`;
+      if (p3) formatted += `-${p3}`;
+      return formatted;
+    });
+  } else {
+    value = value.replace(/^(\d{2})(\d{0,5})(\d{0,4})/, (match, p1, p2, p3) => {
+      let formatted = `(${p1}`;
+      if (p2) formatted += `) ${p2}`;
+      if (p3) formatted += `-${p3}`;
+      return formatted;
+    });
+  }
+
+  setFieldValue(`responsaveis[${index}].phone`, value);
+};
+
 const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
   setFieldValue,
 }) => {
@@ -43,12 +114,6 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].name`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].name`,
-                            e.target.value
-                          )
-                        }
                       />
                     </div>
 
@@ -60,12 +125,6 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].relation`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].relation`,
-                            e.target.value
-                          )
-                        }
                       />
                     </div>
 
@@ -77,11 +136,8 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].phone`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].phone`,
-                            e.target.value
-                          )
+                        onChange={(e: any) =>
+                          handlePhoneInput(e, index, setFieldValue)
                         }
                       />
                     </div>
@@ -94,12 +150,6 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].email`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].email`,
-                            e.target.value
-                          )
-                        }
                       />
                     </div>
 
@@ -111,12 +161,6 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].profession`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].profession`,
-                            e.target.value
-                          )
-                        }
                       />
                     </div>
 
@@ -126,12 +170,6 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].rg`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].rg`,
-                            e.target.value
-                          )
-                        }
                       />
                     </div>
 
@@ -143,11 +181,8 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                         type="text"
                         name={`responsaveis[${index}].cpfCnpj`}
                         className={styles.input}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFieldValue(
-                            `responsaveis[${index}].cpfCnpj`,
-                            e.target.value
-                          )
+                        onChange={(e: any) =>
+                          handleCpfCnpjChange(e, index, setFieldValue)
                         }
                       />
                     </div>

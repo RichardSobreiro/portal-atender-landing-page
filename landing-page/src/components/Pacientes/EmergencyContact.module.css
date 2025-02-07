@@ -38,6 +38,20 @@
   border-radius: 4px;
 }
 
+.select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
+.select:focus {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .grid {
