@@ -73,10 +73,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = async (credentials: LoginCredentials) => {
     try {
-      const response = await axios.post('http://localhost:3000/auth/signin', {
-        email: credentials.username,
-        password: credentials.password,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
+        {
+          email: credentials.username,
+          password: credentials.password,
+        }
+      );
       const accessToken: string = response.data.access_token;
       const refreshToken: string = response.data.refresh_token;
       setAuthenticationState(accessToken, refreshToken, credentials.rememberMe);

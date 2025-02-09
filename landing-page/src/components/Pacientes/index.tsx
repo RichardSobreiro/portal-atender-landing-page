@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styles from './PatientsList.module.css';
 import axiosInstance from '@/services/axiosInstance';
 import { useSpinner } from '@/context/SpinnerContext';
@@ -14,50 +14,81 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Pagination from '@/general/Pagination';
+import { formatDate } from '@/general/Formatters';
 
 interface Patient {
   id: string;
-  nome: string;
-  nascimento: string;
-  telefone: string;
+  name: string;
+  birthDate: string;
+  phone: string;
   email: string;
 }
 
 const PatientsList: React.FC = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const { showSpinner, hideSpinner } = useSpinner();
   const router = useRouter();
+  const hasFetched = useRef(false);
 
   const fetchPatients = useCallback(async () => {
     try {
       showSpinner();
       const response = await axiosInstance.get('/patients', {
-        params: { search: searchTerm },
+        params: { nome: searchTerm, page: currentPage, limit: 10 },
       });
-      setPatients(response.data.patients);
+      const formattedPatients = response.data.data.map((patient: any) => {
+        const favoritePhone =
+          patient.phones.find((phone: any) => phone.favorite) ||
+          patient.phones[0] ||
+          null;
+        const favoriteEmail =
+          patient.emails.find((email: any) => email.favorite) ||
+          patient.emails[0] ||
+          null;
+
+        return {
+          ...patient,
+          phone: favoritePhone ? favoritePhone.number : '',
+          email: favoriteEmail ? favoriteEmail.address : '',
+        };
+      });
+
+      setPatients(formattedPatients);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Erro ao carregar pacientes:', error);
       toast.error('Erro ao carregar pacientes.');
     } finally {
       hideSpinner();
     }
-  }, [searchTerm, showSpinner, hideSpinner]);
+  }, [searchTerm, currentPage, showSpinner, hideSpinner]);
 
   useEffect(() => {
-    //fetchPatients();
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      fetchPatients();
+    }
   }, [fetchPatients]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent page refresh
     fetchPatients();
   };
 
   const navigateToCreatePatient = () => {
     router.push('/pacientes/novo');
+  };
+
+  const navigateToEditPatient = (id: string) => {
+    router.push(`/pacientes/${id}/editar`);
   };
 
   return (
@@ -101,15 +132,19 @@ const PatientsList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {patients.length > 0 ? (
+          {Array.isArray(patients) && patients.length > 0 ? (
             patients.map((patient) => (
               <tr key={patient.id}>
-                <td>{patient.nome}</td>
-                <td>{patient.nascimento}</td>
-                <td>{patient.telefone}</td>
+                <td>{patient.name}</td>
+                <td>{formatDate(patient.birthDate)}</td>
+                <td>{patient.phone}</td>
                 <td>{patient.email}</td>
                 <td className={styles.actions}>
-                  <FontAwesomeIcon icon={faEdit} className={styles.editIcon} />
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    className={styles.editIcon}
+                    onClick={() => navigateToEditPatient(patient.id)}
+                  />
                   <FontAwesomeIcon
                     icon={faTrash}
                     className={styles.deleteIcon}
@@ -126,6 +161,11 @@ const PatientsList: React.FC = () => {
           )}
         </tbody>
       </table>
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

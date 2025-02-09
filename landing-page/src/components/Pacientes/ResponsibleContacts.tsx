@@ -37,7 +37,7 @@ const handleCpfCnpjChange = (
   setFieldValue: (field: string, value: any) => void
 ) => {
   let value = e.target.value;
-  setFieldValue(`responsaveis[${index}].cpfCnpj`, formatCpfCnpj(value));
+  setFieldValue(`responsibles[${index}].cpfCnpj`, formatCpfCnpj(value));
 };
 
 const handlePhoneInput = (
@@ -52,13 +52,13 @@ const handlePhoneInput = (
 
   // Allow full deletion
   if (value.length === 0) {
-    setFieldValue(`responsaveis[${index}].phone`, '');
+    setFieldValue(`responsibles[${index}].phone`, '');
     return;
   }
 
   // Prevent forcing a space if the user is deleting
   if (value.length < 2) {
-    setFieldValue(`responsaveis[${index}].phone`, `(${value}`);
+    setFieldValue(`responsibles[${index}].phone`, `(${value}`);
     return;
   }
 
@@ -79,7 +79,7 @@ const handlePhoneInput = (
     });
   }
 
-  setFieldValue(`responsaveis[${index}].phone`, value);
+  setFieldValue(`responsibles[${index}].phone`, value);
 };
 
 const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
@@ -88,10 +88,10 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
   return (
     <fieldset className={styles.section}>
       <legend className={styles.legend}>Responsáveis</legend>
-      <FieldArray name="responsaveis">
+      <FieldArray name="responsibles">
         {({ push, remove, form }) => (
           <div>
-            {(form.values.responsaveis ?? []).map(
+            {(form.values.responsibles ?? []).map(
               (responsible: any, index: number) => (
                 <div key={index} className={styles.responsibleRow}>
                   <div className={styles.header}>
@@ -107,34 +107,34 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
 
                   <div className={styles.grid}>
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].name`}>
+                      <label htmlFor={`responsibles[${index}].name`}>
                         Nome*
                       </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].name`}
+                        name={`responsibles[${index}].name`}
                         className={styles.input}
                       />
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].relation`}>
+                      <label htmlFor={`responsibles[${index}].relation`}>
                         Relação*
                       </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].relation`}
+                        name={`responsibles[${index}].relation`}
                         className={styles.input}
                       />
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].phone`}>
+                      <label htmlFor={`responsibles[${index}].phone`}>
                         Telefone
                       </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].phone`}
+                        name={`responsibles[${index}].phone`}
                         className={styles.input}
                         onChange={(e: any) =>
                           handlePhoneInput(e, index, setFieldValue)
@@ -143,43 +143,45 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].email`}>
+                      <label htmlFor={`responsibles[${index}].email`}>
                         Email
                       </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].email`}
+                        name={`responsibles[${index}].email`}
                         className={styles.input}
                       />
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].profession`}>
+                      <label htmlFor={`responsibles[${index}].profession`}>
                         Profissão
                       </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].profession`}
+                        name={`responsibles[${index}].profession`}
                         className={styles.input}
                       />
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].rg`}>RG</label>
+                      <label htmlFor={`responsibles[${index}].idCard`}>
+                        RG
+                      </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].rg`}
+                        name={`responsibles[${index}].idCard`}
                         className={styles.input}
                       />
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label htmlFor={`responsaveis[${index}].cpfCnpj`}>
+                      <label htmlFor={`responsibles[${index}].cpfCnpj`}>
                         CPF/CNPJ
                       </label>
                       <Field
                         type="text"
-                        name={`responsaveis[${index}].cpfCnpj`}
+                        name={`responsibles[${index}].cpfCnpj`}
                         className={styles.input}
                         onChange={(e: any) =>
                           handleCpfCnpjChange(e, index, setFieldValue)
@@ -196,7 +198,7 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
               className={styles.addButton}
               onClick={() => {
                 const lastResponsible =
-                  form.values.responsaveis[form.values.responsaveis.length - 1];
+                  form.values.responsibles[form.values.responsibles.length - 1];
 
                 if (
                   !lastResponsible ||
@@ -218,7 +220,7 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                 }
               }}
             >
-              {form.values.responsaveis.length === 0
+              {form.values.responsibles.length === 0
                 ? 'Adicionar Responsável'
                 : 'Adicionar Outro Responsável'}
             </button>

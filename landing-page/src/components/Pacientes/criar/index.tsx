@@ -1,7 +1,7 @@
 /** @format */
 
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { Formik, Form, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import styles from './CreatePatient.module.css';
 import { useRouter } from 'next/router';
@@ -13,45 +13,48 @@ import AddressInput from '../AddressInput';
 import EmergencyContact from '../EmergencyContact';
 import ResponsibleContacts from '../ResponsibleContacts';
 import BasicInformation from '../BasicInformation';
+import axiosInstance from '@/services/axiosInstance';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons';
 
 interface CreatePatientFormValues {
-  nome: string;
-  dataNascimento: string;
-  idade: string;
-  rg: string;
+  name: string;
+  birthDate: string;
+  age: string;
+  idCard: string;
   cpfCnpj: string;
   instagram: string;
-  profissao: string;
-  localTrabalho: string;
-  genero: string;
-  estadoCivil: string;
-  indicacao: string;
-  observacoes: string;
-  telefones: { tipo: string; numero: string; favorito: boolean }[];
-  emails: { tipo: string; endereco: string; favorito: boolean }[];
-  enderecos: {
-    tipo: string;
-    cep: string;
-    rua: string;
-    numero: string;
-    complemento: string;
-    bairro: string;
-    cidade: string;
-    estado: string;
-    pais: string;
-    favorito: boolean;
+  profession: string;
+  workplace: string;
+  gender: string;
+  maritalStatus: string;
+  referral: string;
+  observations: string;
+  phones: { type: string; number: string; favorite: boolean }[];
+  emails: { type: string; address: string; favorite: boolean }[];
+  addresses: {
+    type: string;
+    postalCode: string;
+    street: string;
+    number: string;
+    complement: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    country: string;
+    favorite: boolean;
   }[];
-  emergencyName: string;
-  emergencyPhone: string;
-  healthPlan: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  healthInsurance: string;
   bloodType: string;
-  responsaveis: {
+  responsibles: {
     name: string;
     relation: string;
     phone: string;
     email: string;
     profession: string;
-    rg: string;
+    idCard: string;
     cpfCnpj: string;
   }[];
 }
@@ -59,32 +62,53 @@ interface CreatePatientFormValues {
 const CreatePatient: React.FC = () => {
   const router = useRouter();
   const { showSpinner, hideSpinner, isLoading } = useSpinner();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initialize on first load
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const validationSchema = Yup.object({
-    nome: Yup.string().required('Nome é obrigatório'),
+    name: Yup.string().required('Nome é obrigatório'),
   });
 
   const initialValues: CreatePatientFormValues = {
-    nome: '',
-    dataNascimento: '',
-    idade: '',
-    rg: '',
+    name: '',
+    birthDate: '',
+    age: '',
+    idCard: '',
     cpfCnpj: '',
     instagram: '',
-    profissao: '',
-    localTrabalho: '',
-    genero: '',
-    estadoCivil: '',
-    indicacao: '',
-    observacoes: '',
-    telefones: [],
+    profession: '',
+    workplace: '',
+    gender: '',
+    maritalStatus: '',
+    referral: '',
+    observations: '',
+    phones: [],
     emails: [],
-    enderecos: [],
-    emergencyName: '',
-    emergencyPhone: '',
-    healthPlan: '',
+    addresses: [],
+    emergencyContactName: '',
+    emergencyContactPhone: '',
+    healthInsurance: '',
     bloodType: '',
-    responsaveis: [],
+    responsibles: [],
   };
 
   const handleSubmit = async (
@@ -93,92 +117,139 @@ const CreatePatient: React.FC = () => {
   ) => {
     showSpinner();
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/patients`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values),
-        }
-      );
+      const removeMask = (value: string) => value.replace(/\D/g, ''); // Remove all non-digit characters
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erro ao cadastrar paciente');
-      }
+      const payload = {
+        ...values,
+        age: values.age ? Number(values.age) : undefined, // Ensure age is a number
+        birthDate: values.birthDate
+          ? new Date(values.birthDate).toISOString().split('T')[0] // Convert to YYYY-MM-DD
+          : undefined,
+        cpfCnpj: removeMask(values.cpfCnpj), // Remove mask from CPF/CNPJ
+        emergencyContactPhone: removeMask(values.emergencyContactPhone), // Remove mask from emergency phone
+        phones: values.phones
+          .filter((phone) => phone.number) // Ensure phone.number exists
+          .map((phone) => ({
+            type: phone.type,
+            number: removeMask(phone.number), // Remove mask from phone number
+            favorite: phone.favorite ?? false,
+          })),
+        emails: values.emails
+          .filter((email) => email.address && email.address.trim() !== '') // Remove empty emails
+          .map((email) => ({
+            type: email.type,
+            address: String(email.address).trim(), // Ensure it's a string
+            favorite: email.favorite ?? false,
+          })),
+        addresses: values.addresses.map((address) => ({
+          ...address,
+          postalCode: removeMask(address.postalCode), // Remove mask from postalCode
+        })),
+        responsibles: values.responsibles.map((responsible) => ({
+          ...responsible,
+          phone: removeMask(responsible.phone), // Remove mask from responsible's phone
+          cpfCnpj: removeMask(responsible.cpfCnpj), // Remove mask from responsible's CPF/CNPJ
+        })),
+      };
 
+      const response = await axiosInstance.post('/patients', payload);
+      const patientId = response.data.id;
       toast.success('Paciente cadastrado com sucesso!');
-      router.push('/pacientes');
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : 'Ocorreu um erro inesperado.'
-      );
+      router.push(`/pacientes/${patientId}/editar`);
+    } catch (error: any) {
+      const errorMessages = error.response?.data?.message;
+
+      if (Array.isArray(errorMessages)) {
+        // Show each validation message in a separate toast
+        errorMessages.forEach((msg) => toast.error(msg));
+      } else {
+        // Show a single toast for other errors
+        const errorMessage = errorMessages || 'Ocorreu um erro inesperado.';
+        toast.error(errorMessage);
+      }
     } finally {
       hideSpinner();
-      setSubmitting(false);
+      setSubmitting(false); // Ensure the form re-enables the button
     }
   };
 
   return (
-    <div className={styles.container}>
+    <>
       <ToastContainer />
-
-      <div className={styles.titleContainer}>
-        <button
-          className={styles.backButton}
-          onClick={() => router.push('/pacientes')}
-        >
-          ← Voltar
-        </button>
-        <h2 className={styles.titlePage}>Novo Cliente</h2>
-      </div>
-
-      {isLoading && <div className={styles.spinner}></div>}
-
-      <div className={styles.formContainer}>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting, setFieldValue }) => (
-            <Form className={styles.form} noValidate>
-              {/* DADOS BÁSICOS SECTION */}
-              <BasicInformation setFieldValue={setFieldValue} />
-
-              {/* CONTATOS SECTION */}
-              <div className={styles.contactSection}>
-                <ContactInput
-                  name="telefones"
-                  label="Telefones"
-                  options={['Celular', 'Residencial', 'Comercial']}
-                  setFieldValue={setFieldValue}
-                />
-                <ContactInput
-                  name="emails"
-                  label="Emails"
-                  options={['Pessoal', 'Empresarial']}
-                  setFieldValue={setFieldValue}
-                />
-              </div>
-
-              {/* Endereços Section */}
-              <AddressInput
-                name="enderecos"
-                label="Endereços"
-                setFieldValue={setFieldValue}
-              />
-
-              {/* CONTATO DE EMERGÊNCIA & RESPONSÁVEIS SECTIONS */}
-              <div className={styles.emergencyResponsibleSection}>
-                <EmergencyContact setFieldValue={setFieldValue} />
-                <ResponsibleContacts setFieldValue={setFieldValue} />
-              </div>
-            </Form>
+      <div className={styles.container}>
+        <div className={styles.titleContainer}>
+          <button
+            className={styles.backButton}
+            onClick={() => router.push('/pacientes')}
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+            {!isMobile && ' Voltar'}
+          </button>
+          <h2 className={styles.titlePage}>Novo Cliente</h2>
+          {!isScrolled && (
+            <button
+              type="submit"
+              form="createPatientForm"
+              className={styles.saveButton}
+            >
+              <FontAwesomeIcon icon={faSave} />
+              {!isMobile && ' Salvar'}
+            </button>
           )}
-        </Formik>
+        </div>
+
+        {isLoading && <div className={styles.spinner}></div>}
+
+        <div className={styles.formContainer}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values, actions) => {
+              console.log('Formik onSubmit triggered'); // <-- Check if this appears in the console
+              handleSubmit(values, actions);
+            }}
+          >
+            {({ isSubmitting, setFieldValue }) => (
+              <Form className={styles.form} id="createPatientForm" noValidate>
+                <BasicInformation setFieldValue={setFieldValue} />
+                <div className={styles.contactSection}>
+                  <ContactInput
+                    name="phones"
+                    label="Telefones"
+                    options={['Celular', 'Residencial', 'Comercial']}
+                    setFieldValue={setFieldValue}
+                  />
+                  <ContactInput
+                    name="emails"
+                    label="Emails"
+                    options={['Pessoal', 'Empresarial']}
+                    setFieldValue={setFieldValue}
+                  />
+                </div>
+                <AddressInput
+                  name="addresses"
+                  label="Endereços"
+                  setFieldValue={setFieldValue}
+                />
+                <div className={styles.emergencyResponsibleSection}>
+                  <EmergencyContact setFieldValue={setFieldValue} />
+                  <ResponsibleContacts setFieldValue={setFieldValue} />
+                </div>
+                {isScrolled && (
+                  <button
+                    type="submit"
+                    form="createPatientForm"
+                    className={styles.floatingSaveButton}
+                  >
+                    <FontAwesomeIcon icon={faSave} />
+                  </button>
+                )}
+              </Form>
+            )}
+          </Formik>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

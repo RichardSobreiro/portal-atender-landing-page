@@ -23,7 +23,6 @@ function AppContent({ Component, pageProps, router }: AppProps) {
     <>
       {isLoading && <Spinner />}
       <Component {...pageProps} router={router} />
-      <ToastContainer />
     </>
   );
 }

@@ -18,13 +18,13 @@ const EmergencyContact: React.FC<EmergencyContactProps> = ({
 
     // Allow full deletion
     if (value.length === 0) {
-      setFieldValue('emergencyPhone', '');
+      setFieldValue('emergencyContactPhone', '');
       return;
     }
 
     // Prevent forcing a space if the user is deleting
     if (value.length < 2) {
-      setFieldValue('emergencyPhone', `(${value}`);
+      setFieldValue('emergencyContactPhone', `(${value}`);
       return;
     }
 
@@ -51,7 +51,7 @@ const EmergencyContact: React.FC<EmergencyContactProps> = ({
       );
     }
 
-    setFieldValue('emergencyPhone', value);
+    setFieldValue('emergencyContactPhone', value);
   };
 
   return (
@@ -59,42 +59,42 @@ const EmergencyContact: React.FC<EmergencyContactProps> = ({
       <legend className={styles.legend}>Contato de Emergência</legend>
       <div className={styles.grid}>
         <div className={styles.inputGroup}>
-          <label htmlFor="emergencyName">Nome</label>
+          <label htmlFor="emergencyContactName">Nome</label>
           <Field
             type="text"
-            id="emergencyName"
-            name="emergencyName"
+            id="emergencyContactName"
+            name="emergencyContactName"
             className={styles.input}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFieldValue('emergencyName', e.target.value)
+              setFieldValue('emergencyContactName', e.target.value)
             }
           />
           <ErrorMessage
-            name="emergencyName"
+            name="emergencyContactName"
             component="div"
             className={styles.errorMessage}
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="healthPlan">Plano de Saúde</label>
+          <label htmlFor="healthInsurance">Plano de Saúde</label>
           <Field
             type="text"
-            id="healthPlan"
-            name="healthPlan"
+            id="healthInsurance"
+            name="healthInsurance"
             className={styles.input}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFieldValue('healthPlan', e.target.value)
+              setFieldValue('healthInsurance', e.target.value)
             }
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="emergencyPhone">Telefone</label>
+          <label htmlFor="emergencyContactPhone">Telefone</label>
           <Field
             type="text"
-            id="emergencyPhone"
-            name="emergencyPhone"
+            id="emergencyContactPhone"
+            name="emergencyContactPhone"
             className={styles.input}
             onChange={handlePhoneInput}
           />

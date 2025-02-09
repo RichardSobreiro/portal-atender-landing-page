@@ -26,11 +26,11 @@ const AddressInput: React.FC<AddressInputProps> = ({
       const data = await response.json();
 
       if (!data.erro) {
-        setFieldValue(`${name}[${index}].rua`, data.logradouro);
-        setFieldValue(`${name}[${index}].bairro`, data.bairro);
-        setFieldValue(`${name}[${index}].cidade`, data.localidade);
-        setFieldValue(`${name}[${index}].estado`, data.uf);
-        setFieldValue(`${name}[${index}].pais`, 'Brasil');
+        setFieldValue(`${name}[${index}].street`, data.logradouro);
+        setFieldValue(`${name}[${index}].neighborhood`, data.bairro);
+        setFieldValue(`${name}[${index}].city`, data.localidade);
+        setFieldValue(`${name}[${index}].state`, data.uf);
+        setFieldValue(`${name}[${index}].country`, 'Brasil');
       }
     } catch (error) {
       console.error('Erro ao buscar o endereço', error);
@@ -50,14 +50,14 @@ const AddressInput: React.FC<AddressInputProps> = ({
                   <div className={styles.actionIcons}>
                     <button
                       type="button"
-                      className={`${styles.iconButton} ${address.favorito ? styles.favorite : ''}`}
+                      className={`${styles.iconButton} ${address.favorite ? styles.favorite : ''}`}
                       onClick={() =>
                         setFieldValue(
                           name,
                           form.values[name].map((item: any, i: number) =>
                             i === index
-                              ? { ...item, favorito: !item.favorito }
-                              : { ...item, favorito: false }
+                              ? { ...item, favorite: !item.favorite }
+                              : { ...item, favorite: false }
                           )
                         )
                       }
@@ -77,7 +77,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
                 <div className={styles.grid}>
                   <Field
                     as="select"
-                    name={`${name}[${index}].tipo`}
+                    name={`${name}[${index}].type`}
                     className={styles.input}
                   >
                     <option value="Residencial">Residencial</option>
@@ -86,7 +86,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
 
                   <Field
                     type="text"
-                    name={`${name}[${index}].cep`}
+                    name={`${name}[${index}].postalCode`}
                     className={styles.input}
                     placeholder="CEP"
                     onBlur={(e: any) => fetchAddress(e.target.value, index)}
@@ -94,43 +94,43 @@ const AddressInput: React.FC<AddressInputProps> = ({
 
                   <Field
                     type="text"
-                    name={`${name}[${index}].rua`}
+                    name={`${name}[${index}].street`}
                     className={styles.input}
                     placeholder="Rua"
                   />
                   <Field
                     type="text"
-                    name={`${name}[${index}].numero`}
+                    name={`${name}[${index}].number`}
                     className={styles.input}
                     placeholder="Número"
                   />
                   <Field
                     type="text"
-                    name={`${name}[${index}].complemento`}
+                    name={`${name}[${index}].complement`}
                     className={styles.input}
                     placeholder="Complemento"
                   />
                   <Field
                     type="text"
-                    name={`${name}[${index}].bairro`}
+                    name={`${name}[${index}].neighborhood`}
                     className={styles.input}
                     placeholder="Bairro"
                   />
                   <Field
                     type="text"
-                    name={`${name}[${index}].cidade`}
+                    name={`${name}[${index}].city`}
                     className={styles.input}
                     placeholder="Cidade"
                   />
                   <Field
                     type="text"
-                    name={`${name}[${index}].estado`}
+                    name={`${name}[${index}].state`}
                     className={styles.input}
                     placeholder="Estado"
                   />
                   <Field
                     type="text"
-                    name={`${name}[${index}].pais`}
+                    name={`${name}[${index}].country`}
                     className={styles.input}
                     placeholder="País"
                   />
@@ -144,8 +144,11 @@ const AddressInput: React.FC<AddressInputProps> = ({
               onClick={() => {
                 const lastAddress =
                   form.values[name]?.[form.values[name].length - 1];
-                if (!lastAddress || (lastAddress.cep && lastAddress.rua)) {
-                  push({ tipo: '', cep: '', favorito: false });
+                if (
+                  !lastAddress ||
+                  (lastAddress.postalCode && lastAddress.street)
+                ) {
+                  push({ type: '', postalCode: '', favorite: false });
                 } else {
                   toast.warn(
                     'Preencha o CEP e a Rua antes de adicionar um novo endereço.'

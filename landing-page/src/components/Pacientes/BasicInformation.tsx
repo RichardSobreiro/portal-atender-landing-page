@@ -40,8 +40,8 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
     const [year, month, day] = inputDate.split('-');
     const formattedDate = `${day}/${month}/${year}`;
 
-    setFieldValue('dataNascimento', formattedDate);
-    setFieldValue('idade', calculateAge(formattedDate));
+    setFieldValue('birthDate', formattedDate);
+    setFieldValue('age', calculateAge(formattedDate));
   };
 
   const formatCpfCnpj = (value: string) => {
@@ -74,25 +74,25 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
       <legend className={styles.legend}>Dados Básicos</legend>
       <div className={styles.grid}>
         <div className={styles.inputGroup}>
-          <label htmlFor="nome">Nome*</label>
-          <Field type="text" id="nome" name="nome" className={styles.input} />
+          <label htmlFor="name">Nome*</label>
+          <Field type="text" id="name" name="name" className={styles.input} />
           <ErrorMessage
-            name="nome"
+            name="name"
             component="div"
             className={styles.errorMessage}
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="dataNascimento">Data de Nascimento</label>
+          <label htmlFor="birthDate">Data de Nascimento</label>
           <input
             type="date"
-            id="dataNascimento"
-            name="dataNascimento"
+            id="birthDate"
+            name="birthDate"
             className={styles.input}
             value={
-              values.dataNascimento
-                ? values.dataNascimento.split('/').reverse().join('-') // Convert DD/MM/YYYY to YYYY-MM-DD for input
+              values.birthDate
+                ? values.birthDate.split('/').reverse().join('-') // Convert DD/MM/YYYY to YYYY-MM-DD for input
                 : ''
             }
             onChange={handleDateChange}
@@ -100,19 +100,24 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="idade">Idade</label>
+          <label htmlFor="age">Idade</label>
           <Field
             type="text"
-            id="idade"
-            name="idade"
+            id="age"
+            name="age"
             className={`${styles.input} ${styles.grayedOut}`}
             readOnly
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="rg">RG</label>
-          <Field type="text" id="rg" name="rg" className={styles.input} />
+          <label htmlFor="idCard">RG</label>
+          <Field
+            type="text"
+            id="idCard"
+            name="idCard"
+            className={styles.input}
+          />
         </div>
 
         <div className={styles.inputGroup}>
@@ -139,31 +144,31 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="profissao">Profissão</label>
+          <label htmlFor="profession">Profissão</label>
           <Field
             type="text"
-            id="profissao"
-            name="profissao"
+            id="profession"
+            name="profession"
             className={styles.input}
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="localTrabalho">Local de Trabalho</label>
+          <label htmlFor="workplace">Local de Trabalho</label>
           <Field
             type="text"
-            id="localTrabalho"
-            name="localTrabalho"
+            id="workplace"
+            name="workplace"
             className={styles.input}
           />
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="genero">Gênero</label>
+          <label htmlFor="gender">Gênero</label>
           <Field
             as="select"
-            id="genero"
-            name="genero"
+            id="gender"
+            name="gender"
             className={styles.select}
           >
             <option value="">Selecione</option>
@@ -174,11 +179,11 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="estadoCivil">Estado Civil</label>
+          <label htmlFor="maritalStatus">Estado Civil</label>
           <Field
             as="select"
-            id="estadoCivil"
-            name="estadoCivil"
+            id="maritalStatus"
+            name="maritalStatus"
             className={styles.select}
           >
             <option value="">Selecione</option>
@@ -190,21 +195,21 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
         </div>
 
         <div className={styles.inputGroup}>
-          <label htmlFor="indicacao">Indicação</label>
+          <label htmlFor="referral">Indicação</label>
           <Field
             type="text"
-            id="indicacao"
-            name="indicacao"
+            id="referral"
+            name="referral"
             className={styles.input}
           />
         </div>
 
         <div className={styles.fullWidthInputGroup}>
-          <label htmlFor="observacoes">Observações</label>
+          <label htmlFor="observations">Observações</label>
           <Field
             as="textarea"
-            id="observacoes"
-            name="observacoes"
+            id="observations"
+            name="observations"
             className={styles.textarea}
           />
         </div>

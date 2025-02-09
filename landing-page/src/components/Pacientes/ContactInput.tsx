@@ -30,13 +30,13 @@ const ContactInput: React.FC<ContactInputProps> = ({
 
     // Allow full deletion (fixes the issue where the space remains)
     if (value.length === 0) {
-      setFieldValue(`${name}[${index}].valor`, '');
+      setFieldValue(`${name}[${index}].number`, '');
       return;
     }
 
     // Prevent forcing a space if the user is deleting
     if (value.length < 2) {
-      setFieldValue(`${name}[${index}].valor`, `(${value}`);
+      setFieldValue(`${name}[${index}].number`, `(${value}`);
       return;
     }
 
@@ -63,7 +63,7 @@ const ContactInput: React.FC<ContactInputProps> = ({
       );
     }
 
-    setFieldValue(`${name}[${index}].valor`, value);
+    setFieldValue(`${name}[${index}].number`, value);
   };
 
   return (
@@ -79,8 +79,11 @@ const ContactInput: React.FC<ContactInputProps> = ({
                   <div className={styles.inputGroup}>
                     <Field
                       as="select"
-                      name={`${name}[${index}].tipo`}
+                      name={`${name}[${index}].type`}
                       className={styles.select}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setFieldValue(`${name}[${index}].type`, e.target.value)
+                      }
                     >
                       {options.map((option) => (
                         <option key={option} value={option}>
@@ -92,19 +95,27 @@ const ContactInput: React.FC<ContactInputProps> = ({
                     <div className={styles.inputContainer}>
                       <Field
                         type="text"
-                        name={`${name}[${index}].valor`}
+                        name={
+                          name === 'phones'
+                            ? `${name}[${index}].number`
+                            : `${name}[${index}].address`
+                        }
                         className={styles.input}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          name === 'telefones'
+                          name === 'phones'
                             ? handlePhoneInput(e, index)
                             : setFieldValue(
-                                `${name}[${index}].valor`,
+                                `${name}[${index}].address`,
                                 e.target.value
                               )
                         }
                       />
                       <ErrorMessage
-                        name={`${name}[${index}].valor`}
+                        name={
+                          name === 'phones'
+                            ? `${name}[${index}].number`
+                            : `${name}[${index}].address`
+                        }
                         component="div"
                         className={styles.errorMessage}
                       />
@@ -116,15 +127,15 @@ const ContactInput: React.FC<ContactInputProps> = ({
                     <button
                       type="button"
                       className={`${styles.iconButton} ${
-                        contact.favorito ? styles.favorite : ''
+                        contact.favorite ? styles.favorite : ''
                       }`}
                       onClick={() =>
                         setFieldValue(
                           name,
                           form.values[name].map((item: any, i: number) =>
                             i === index
-                              ? { ...item, favorito: !item.favorito }
-                              : { ...item, favorito: false }
+                              ? { ...item, favorite: !item.favorite }
+                              : { ...item, favorite: false }
                           )
                         )
                       }
@@ -146,7 +157,7 @@ const ContactInput: React.FC<ContactInputProps> = ({
               <button
                 type="button"
                 className={styles.addButton}
-                onClick={() => push({ tipo: '', valor: '', favorito: false })}
+                onClick={() => push({ type: '', valor: '', favorite: false })}
               >
                 {form.values[name].length === 0
                   ? `Adicionar ${label}`
