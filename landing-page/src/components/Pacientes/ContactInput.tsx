@@ -157,7 +157,13 @@ const ContactInput: React.FC<ContactInputProps> = ({
               <button
                 type="button"
                 className={styles.addButton}
-                onClick={() => push({ type: '', valor: '', favorite: false })}
+                onClick={() =>
+                  push({
+                    type: `${name === 'phones' ? 'Celular' : 'Pessoal'}`,
+                    valor: '',
+                    favorite: false,
+                  })
+                }
               >
                 {form.values[name].length === 0
                   ? `Adicionar ${label}`

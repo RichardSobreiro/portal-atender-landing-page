@@ -4,7 +4,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
-import UpdatePatient from '@/components/Pacientes/editar';
+import EditPatient from '@/components/Pacientes/editar';
 import { useRouter } from 'next/router';
 
 const EditarPaciente: NextPage = () => {
@@ -41,7 +41,7 @@ const EditarPaciente: NextPage = () => {
         <meta name="language" content="pt-BR" />
       </Head>
       <Layout renderSideMenu={true}>
-        <UpdatePatient patientId={id as string} />
+        <EditPatient patientId={id as string} />
       </Layout>
     </>
   );

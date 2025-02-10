@@ -148,7 +148,11 @@ const AddressInput: React.FC<AddressInputProps> = ({
                   !lastAddress ||
                   (lastAddress.postalCode && lastAddress.street)
                 ) {
-                  push({ type: '', postalCode: '', favorite: false });
+                  push({
+                    type: 'Residencial',
+                    postalCode: '',
+                    favorite: false,
+                  });
                 } else {
                   toast.warn(
                     'Preencha o CEP e a Rua antes de adicionar um novo endereço.'

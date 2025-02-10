@@ -210,7 +210,7 @@ const ResponsibleContacts: React.FC<ResponsibleContactsProps> = ({
                     phone: '',
                     email: '',
                     profession: '',
-                    rg: '',
+                    idCard: '',
                     cpfCnpj: '',
                   });
                 } else {

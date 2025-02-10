@@ -15,7 +15,7 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Pagination from '@/general/Pagination';
-import { formatDate } from '@/general/Formatters';
+import { formatDate, formatPhoneNumber } from '@/general/Formatters';
 
 interface Patient {
   id: string;
@@ -52,7 +52,7 @@ const PatientsList: React.FC = () => {
 
         return {
           ...patient,
-          phone: favoritePhone ? favoritePhone.number : '',
+          phone: favoritePhone ? formatPhoneNumber(favoritePhone.number) : '',
           email: favoriteEmail ? favoriteEmail.address : '',
         };
       });

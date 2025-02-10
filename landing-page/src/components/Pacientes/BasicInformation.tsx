@@ -3,6 +3,7 @@
 import React from 'react';
 import { Field, ErrorMessage, useFormikContext } from 'formik';
 import styles from './BasicInformation.module.css';
+import { formatCpfCnpj } from '@/general/Formatters';
 
 interface BasicInformationProps {
   setFieldValue: (field: string, value: any) => void;
@@ -42,26 +43,6 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
 
     setFieldValue('birthDate', formattedDate);
     setFieldValue('age', calculateAge(formattedDate));
-  };
-
-  const formatCpfCnpj = (value: string) => {
-    const digits = value.replace(/\D/g, ''); // Remove non-numeric characters
-
-    if (digits.length <= 11) {
-      // CPF Format: 999.999.999-99
-      return digits
-        .replace(/^(\d{3})(\d)/, '$1.$2')
-        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-        .replace(/\.(\d{3})(\d)/, '.$1-$2');
-    } else {
-      // CNPJ Format: 99.999.999/9999-99 (Max 14 digits)
-      return digits
-        .slice(0, 14) // Restrict to 14 digits
-        .replace(/^(\d{2})(\d)/, '$1.$2')
-        .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-        .replace(/\.(\d{3})(\d)/, '.$1/$2')
-        .replace(/\/(\d{4})(\d)/, '/$1-$2');
-    }
   };
 
   const handleCpfCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
