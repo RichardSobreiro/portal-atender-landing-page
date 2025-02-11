@@ -131,6 +131,15 @@
   cursor: pointer;
 }
 
+/** @format */
+.clickableRow {
+  cursor: pointer;
+}
+
+.clickableRow:hover {
+  background-color: var(--color-muted);
+}
+
 /* Hide certain columns on mobile */
 @media (max-width: 768px) {
   .filters {

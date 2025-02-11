@@ -4,9 +4,12 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
-import CreatePatient from '@/components/Pacientes/criar';
+import VisualizePatient from '@/components/Pacientes/visualize/VisualizePatient';
+import { useRouter } from 'next/router';
 
-const CriarPaciente: NextPage = () => {
+const VisualizarPaciente: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <>
       <Head>
@@ -38,10 +41,10 @@ const CriarPaciente: NextPage = () => {
         <meta name="language" content="pt-BR" />
       </Head>
       <Layout renderSideMenu={true}>
-        <CreatePatient />
+        <VisualizePatient patientId={id as string} />
       </Layout>
     </>
   );
 };
 
-export default CriarPaciente;
+export default VisualizarPaciente;

@@ -91,6 +91,10 @@ const PatientsList: React.FC = () => {
     router.push(`/pacientes/${id}/editar`);
   };
 
+  const navigateToVisualizePatient = (id: string) => {
+    router.push(`/pacientes/${id}/visualizar`);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -134,12 +138,19 @@ const PatientsList: React.FC = () => {
         <tbody>
           {Array.isArray(patients) && patients.length > 0 ? (
             patients.map((patient) => (
-              <tr key={patient.id}>
+              <tr
+                key={patient.id}
+                onClick={() => navigateToVisualizePatient(patient.id)}
+                className={styles.clickableRow}
+              >
                 <td>{patient.name}</td>
                 <td>{formatDate(patient.birthDate)}</td>
                 <td>{patient.phone}</td>
                 <td>{patient.email}</td>
-                <td className={styles.actions}>
+                <td
+                  className={styles.actions}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <FontAwesomeIcon
                     icon={faEdit}
                     className={styles.editIcon}
