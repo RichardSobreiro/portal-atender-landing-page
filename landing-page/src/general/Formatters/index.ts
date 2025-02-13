@@ -1,13 +1,37 @@
+export const calculateAge = (dob: string) => {
+  if (!dob) return '';
+  const [day, month, year] = dob.split('/');
+  if (!day || !month || !year) return '';
+
+  const birthDate = new Date(`${year}-${month}-${day}`);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age.toString();
+};
+
 export const formatDate = (dateString: string | null | undefined) => {
   if (!dateString) return '';
 
   try {
-    const date = new Date(dateString);
-    const day = String(date.getUTCDate()).padStart(2, '0'); // Ensure two digits
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-based
-    const year = date.getUTCFullYear();
+    // Ensure dateString follows "YYYY-MM-DD" format before parsing
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(dateString)) {
+      throw new Error('Invalid date format');
+    }
 
-    return `${day}/${month}/${year}`;
+    // Split the date manually to avoid JavaScript Date inconsistencies
+    const [year, month, day] = dateString.split('-');
+
+    return `${month}/${day}/${year}`;
   } catch (error) {
     return 'Data inválida';
   }

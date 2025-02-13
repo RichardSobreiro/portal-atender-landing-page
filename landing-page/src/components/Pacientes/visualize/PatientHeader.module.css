@@ -19,20 +19,35 @@
   text-align: center;
 }
 
-.backButton {
-  background-color: var(--color-muted-text);
-  color: var(--color-surface);
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
+.backButton,
 .editButton {
-  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-muted-text);
   color: var(--color-surface);
   border: none;
   border-radius: 6px;
   padding: 8px 16px;
   cursor: pointer;
+}
+
+.editButton {
+  background-color: var(--color-primary);
+}
+
+.buttonText {
+  display: inline;
+}
+
+/* 🔹 Mobile View - Hide Text, Show Only Icons */
+@media (max-width: 768px) {
+  .buttonText {
+    display: none;
+  }
+
+  .backButton,
+  .editButton {
+    padding: 8px;
+  }
 }

@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@tiptap/extension-placeholder": "^2.11.5",
+    "@tiptap/extension-text-align": "^2.11.5"
+  }
+}

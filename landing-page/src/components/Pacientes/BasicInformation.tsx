@@ -3,7 +3,7 @@
 import React from 'react';
 import { Field, ErrorMessage, useFormikContext } from 'formik';
 import styles from './BasicInformation.module.css';
-import { formatCpfCnpj } from '@/general/Formatters';
+import { calculateAge, formatCpfCnpj } from '@/general/Formatters';
 
 interface BasicInformationProps {
   setFieldValue: (field: string, value: any) => void;
@@ -13,26 +13,6 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
   setFieldValue,
 }) => {
   const { values } = useFormikContext<any>(); // Access form values directly
-
-  const calculateAge = (dob: string) => {
-    if (!dob) return '';
-    const [day, month, year] = dob.split('/');
-    if (!day || !month || !year) return '';
-
-    const birthDate = new Date(`${year}-${month}-${day}`);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age.toString();
-  };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputDate = e.target.value; // YYYY-MM-DD

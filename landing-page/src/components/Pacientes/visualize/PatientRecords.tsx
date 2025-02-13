@@ -1,29 +1,107 @@
 /** @format */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './PatientRecords.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
-import { RichTextEditor } from '@mantine/tiptap';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { faFileAlt, faClock } from '@fortawesome/free-solid-svg-icons';
+import RichTextEditorComponent, {
+  RichTextEditorRef,
+} from '@/general/RichText/RichTextEditorComponent';
+import { Button } from '@mantine/core';
+import { toast } from 'react-toastify';
+import { useSpinner } from '@/context/SpinnerContext';
+import axiosInstance from '@/services/axiosInstance';
 
-const PatientRecords: React.FC = () => {
-  const [editorReady, setEditorReady] = useState(false);
+interface PatientRecordsProps {
+  patientId: string | undefined;
+}
 
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: '',
-    onUpdate: ({ editor }) => {
-      console.log('Content:', editor.getHTML());
-    },
-  });
+interface PatientRecordDto {
+  id: string;
+  content: string;
+  createdAt: string;
+}
+
+const PatientRecords: React.FC<PatientRecordsProps> = ({ patientId }) => {
+  const [editorContent, setEditorContent] = useState('');
+  const [patientRecords, setPatientRecords] = useState<PatientRecordDto[]>([]);
+  const { showSpinner, hideSpinner } = useSpinner();
+  const editorRef = useRef<RichTextEditorRef>(null);
+
+  // Fetch patient records
+  const fetchPatientRecords = async () => {
+    if (!patientId) return;
+    showSpinner();
+    try {
+      const response = await axiosInstance.get<PatientRecordDto[]>(
+        `/patient-records/${patientId}`
+      );
+      const sortedRecords = response.data.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      setPatientRecords(sortedRecords);
+    } catch (error: any) {
+      toast.error('Erro ao carregar os registros do paciente.');
+    } finally {
+      hideSpinner();
+    }
+  };
 
   useEffect(() => {
-    if (editor) {
-      setEditorReady(true);
-      editor.commands.focus();
+    fetchPatientRecords();
+  }, [patientId]);
+
+  const handleContentChange = (content: string) => {
+    setEditorContent(content);
+  };
+
+  const isContentEmpty = (content: string) => {
+    const strippedContent = content.replace(/<[^>]*>/g, '').trim();
+    return strippedContent.length === 0;
+  };
+
+  const handleSave = async () => {
+    if (isContentEmpty(editorContent)) {
+      toast.error('O conteúdo da anotação não pode estar vazio.');
+      return;
     }
-  }, [editor]);
+
+    showSpinner();
+    try {
+      const payload = {
+        patientId,
+        content: editorContent.trim(),
+      };
+
+      await axiosInstance.post('/patient-records', payload);
+      toast.success('Prontuário do paciente salvo com sucesso!');
+      editorRef.current?.clearContent();
+      setEditorContent('');
+      fetchPatientRecords();
+    } catch (error: any) {
+      const errorMessages = error.response?.data?.message;
+      if (Array.isArray(errorMessages)) {
+        errorMessages.forEach((msg) => toast.error(msg));
+      } else {
+        toast.error(errorMessages || 'Ocorreu um erro ao salvar o registro.');
+      }
+    } finally {
+      hideSpinner();
+    }
+  };
+
+  const formatDate = (isoDate: string) => {
+    const date = new Date(isoDate);
+    return `${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString(
+      'pt-BR',
+      {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }
+    )}`;
+  };
 
   return (
     <div className={styles.container}>
@@ -36,29 +114,51 @@ const PatientRecords: React.FC = () => {
         editar as informações posteriormente.
       </p>
 
-      {editor && (
-        <RichTextEditor editor={editor} className={styles.editor}>
-          {/* ✅ Keep all icons in a single row */}
-          {editorReady && (
-            <RichTextEditor.Toolbar sticky className={styles.toolbar}>
-              <RichTextEditor.Bold disabled={!editor} />
-              <RichTextEditor.Italic disabled={!editor} />
-              <RichTextEditor.Underline disabled={!editor} />
+      {/* Rich Text Editor */}
+      <RichTextEditorComponent
+        ref={editorRef}
+        initialContent={editorContent}
+        onContentChange={handleContentChange}
+      />
 
-              <RichTextEditor.BulletList disabled={!editor} />
-              <RichTextEditor.OrderedList disabled={!editor} />
+      {/* Save Button */}
+      <div className={styles.buttonContainer}>
+        <Button
+          className={styles.saveButton}
+          disabled={isContentEmpty(editorContent)}
+          onClick={handleSave}
+        >
+          Salvar
+        </Button>
+      </div>
 
-              <RichTextEditor.Undo disabled={!editor} />
-              <RichTextEditor.Redo disabled={!editor} />
-            </RichTextEditor.Toolbar>
-          )}
+      {/* Render saved patient records */}
+      <div className={styles.recordsContainer}>
+        {patientRecords.map((record) => (
+          <div key={record.id} className={styles.record}>
+            <div className={styles.recordHeader}>
+              <div className={styles.recordHeaderItem}>
+                <FontAwesomeIcon
+                  icon={faFileAlt}
+                  className={styles.recordIcon}
+                />
+                <h3 className={styles.recordTitle}>Anotação</h3>
+              </div>
 
-          <RichTextEditor.Content
-            className={styles.editorContent}
-            style={{ minHeight: '250px' }}
-          />
-        </RichTextEditor>
-      )}
+              <div className={styles.recordHeaderItem}>
+                <FontAwesomeIcon icon={faClock} className={styles.clockIcon} />
+                <span className={styles.recordDate}>
+                  {formatDate(record.createdAt)}
+                </span>
+              </div>
+            </div>
+            <div
+              className={styles.recordContent}
+              dangerouslySetInnerHTML={{ __html: record.content }}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

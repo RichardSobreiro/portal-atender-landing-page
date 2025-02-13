@@ -1,0 +1,70 @@
+/** @format */
+
+.editorContainer {
+  width: 100%;
+  background: var(--color-surface);
+  border-radius: 5px;
+  border: 1px solid var(--color-muted-text);
+}
+
+/* ✅ Auto-grow configuration */
+.autoGrowEditor {
+  min-height: 150px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* ✅ Toolbar Fix */
+.mantine-RichTextEditor-toolbar {
+  min-height: 42px !important;
+  display: flex !important;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-muted-text);
+  padding: 6px 8px !important;
+  gap: 6px;
+}
+
+/* ✅ Ensure toolbar buttons have proper spacing */
+.mantine-RichTextEditor-control {
+  font-size: var(--font-size-base) !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+}
+
+/* ✅ Ensure SVG Icons are Properly Scaled */
+.mantine-RichTextEditor-control svg {
+  width: 16px !important;
+  height: 16px !important;
+  display: block !important;
+  fill: currentColor !important;
+}
+
+/* ✅ Editor Content - Fix Overflow and Add Padding */
+.mantine-RichTextEditor-content {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-surface);
+  display: block;
+  padding: 12px; /* ✅ Adds proper padding inside the text input */
+  overflow-wrap: break-word; /* ✅ Ensures long words break properly */
+  word-wrap: break-word; /* ✅ Alternative for older browsers */
+  white-space: pre-wrap; /* ✅ Ensures text wraps to the next line */
+  line-height: 1.5; /* ✅ Improves readability */
+  max-width: 100%; /* ✅ Ensures text stays inside the editor */
+  overflow-y: auto; /* ✅ Enables vertical scrolling */
+  box-sizing: border-box; /* ✅ Ensures padding does not increase width */
+}
+
+/* ✅ Fix Editor Root Display */
+.mantine-RichTextEditor-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
