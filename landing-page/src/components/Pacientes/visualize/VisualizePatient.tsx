@@ -12,11 +12,12 @@ import {
   faFolder,
   faFileMedical, // New icon for 'Atestados'
 } from '@fortawesome/free-solid-svg-icons';
-import PatientRecordWrapper from './PatientRecordWrapper';
+import PatientRecordWrapper from './patient-records/PatientRecordWrapper';
 import { useSpinner } from '@/context/SpinnerContext';
 import axiosInstance from '@/services/axiosInstance';
 import { PatientDto } from '@/dtos/Patients/PatientDto';
 import { toast, ToastContainer } from 'react-toastify';
+import PatientGallery from './gallery/PatientGallery';
 
 interface VisualizePatientProps {
   patientId: string;
@@ -77,7 +78,7 @@ const VisualizePatient: React.FC<VisualizePatientProps> = ({ patientId }) => {
       id: 'gallery',
       label: 'Galeria',
       icon: faImage,
-      component: <div>Galeria</div>,
+      component: <PatientGallery patientId={patientId} />,
     },
     {
       id: 'financial',

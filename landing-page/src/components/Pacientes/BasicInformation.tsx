@@ -21,7 +21,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
     const [year, month, day] = inputDate.split('-');
     const formattedDate = `${day}/${month}/${year}`;
 
-    setFieldValue('birthDate', formattedDate);
+    setFieldValue('birthDate', inputDate);
     setFieldValue('age', calculateAge(formattedDate));
   };
 

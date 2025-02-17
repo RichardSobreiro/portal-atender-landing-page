@@ -22,16 +22,17 @@ export const formatDate = (dateString: string | null | undefined) => {
   if (!dateString) return '';
 
   try {
+    const cleanDate = dateString.split('T')[0];
     // Ensure dateString follows "YYYY-MM-DD" format before parsing
     const regex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!regex.test(dateString)) {
+    if (!regex.test(cleanDate)) {
       throw new Error('Invalid date format');
     }
 
     // Split the date manually to avoid JavaScript Date inconsistencies
-    const [year, month, day] = dateString.split('-');
+    const [year, month, day] = cleanDate.split('-');
 
-    return `${month}/${day}/${year}`;
+    return `${day}/${month}/${year}`;
   } catch (error) {
     return 'Data inválida';
   }

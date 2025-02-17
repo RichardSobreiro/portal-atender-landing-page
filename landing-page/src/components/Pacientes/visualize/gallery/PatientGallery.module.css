@@ -1,0 +1,138 @@
+/** @format */
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.uploadArea {
+  border: 2px dashed var(--color-muted-text);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--color-surface);
+  width: 100%;
+  max-width: 500px;
+  transition: background-color 0.3s ease;
+}
+
+.uploadArea:hover {
+  background-color: var(--color-muted-bg);
+}
+
+.uploadIcon {
+  font-size: 24px;
+  color: var(--color-primary);
+}
+
+.fileInput {
+  display: none;
+}
+
+.previewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.previewItem {
+  position: relative;
+}
+
+.previewImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 2px solid var(--color-muted-text);
+}
+
+.removeButton {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--color-danger);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  background: darkred;
+}
+
+.saveButton {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.saveButton:hover {
+  background-color: var(--color-secondary);
+}
+
+.saveButton:disabled {
+  background-color: var(--color-muted-text);
+  cursor: not-allowed;
+}
+
+.existingImagesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.existingImage {
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.dateHeader {
+  text-align: left; /* Align to the extreme left */
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.existingImage {
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.deleteButton {
+  top: 5px;
+  right: 5px;
+  background: var(--color-danger);
+  border: none;
+  border-radius: 50%;
+  color: var(--color-accent);
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background: darkred;
+}
