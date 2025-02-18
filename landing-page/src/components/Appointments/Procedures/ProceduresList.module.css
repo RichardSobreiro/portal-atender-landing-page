@@ -1,0 +1,141 @@
+/** @format */
+
+.container {
+  padding: 20px;
+  background-color: var(--color-background);
+  border-radius: 8px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.createButton {
+  padding: 10px 20px;
+  background-color: var(--color-secondary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.createButton:hover {
+  background-color: #008c66;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.searchBox {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  height: 40px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  color: var(--color-primary);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: none;
+  border-radius: 8px;
+  color: var(--color-text);
+  font-size: 16px;
+  background-color: transparent;
+  height: 100%;
+}
+
+.filterIcon {
+  color: var(--color-primary);
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.searchButton {
+  padding: 10px;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+}
+
+.searchButton:hover {
+  background-color: #005bb5;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: var(--color-primary);
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+}
+
+.table th {
+  color: var(--color-surface);
+  font-weight: bold;
+}
+
+.colorBox {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.editIcon {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.deleteIcon {
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.clickableRow {
+  cursor: pointer;
+}
+
+.clickableRow:hover {
+  background-color: var(--color-muted);
+}

@@ -1,6 +1,7 @@
 :root {
   /* Color Palette */
   --color-primary: #0070f3; /* Blue */
+  --color-primary-rgb: 0, 112, 243; /* Add this */
   --color-secondary: #00a37a; /* Green */
   --color-accent: #ff6b6b; /* Red */
   --color-background: #f7f7f7; /* Light Gray */

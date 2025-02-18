@@ -1,0 +1,243 @@
+/** @format */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.titleContainer {
+  background-color: var(--color-surface);
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.titlePage {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+}
+
+.backButton {
+  background-color: var(--color-muted-text);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.backButton:hover {
+  background-color: var(--color-primary);
+}
+
+/* Save Button */
+.saveButtonHeader {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.saveButtonHeader:hover {
+  background-color: var(--color-secondary);
+}
+
+.icon {
+  font-size: 14px;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Grouped Rows */
+.inputRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Name, Price, Cost Row */
+.nameInput {
+  flex: 2;
+  min-width: 50%;
+}
+
+.priceInput,
+.costInput {
+  flex: 1;
+}
+
+/* Categoria and Duração Row */
+.categoryInput {
+  flex: 2; /* Takes 50% width */
+  min-width: 50%;
+}
+
+.durationGroup {
+  display: flex;
+  flex: 2;
+  gap: 10px;
+}
+
+/* Ativo and Cor Row */
+.activeColorRow {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Cor Picker */
+.colorInput {
+  display: flex;
+  align-items: center;
+}
+
+.colorPicker {
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--color-muted-text);
+  border-radius: 6px;
+  cursor: pointer;
+  background: none;
+}
+
+.colorPicker::-webkit-color-swatch,
+.colorPicker::-moz-color-swatch {
+  border-radius: 6px;
+  border: none;
+}
+
+/* Ativo (Active) Checkbox */
+.activeInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.activeCheckbox {
+  margin-top: 5px;
+  transform: scale(1.2);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--color-primary);
+}
+
+.input,
+.textarea {
+  font-size: var(--font-size-base);
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.textarea {
+  resize: vertical;
+  height: 80px;
+}
+
+/** @format */
+
+/** @format */
+
+.saveButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.saveButton {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between icon and text */
+  min-width: 90px;
+}
+
+.saveButton:hover {
+  background-color: var(--color-secondary);
+}
+
+.saveIcon {
+  font-size: 16px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .inputRow {
+    flex-direction: column;
+  }
+
+  .activeColorRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nameInput,
+  .categoryInput {
+    min-width: 100%;
+  }
+
+  .durationGroup {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media (max-width: 850px) {
+  .backButton span,
+  .saveButtonHeader span {
+    display: none;
+  }
+}
