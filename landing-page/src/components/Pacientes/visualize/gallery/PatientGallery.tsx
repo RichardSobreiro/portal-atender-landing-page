@@ -9,9 +9,11 @@ import {
   faSave,
   faTimes,
   faTrash,
+  faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import { useSpinner } from '@/context/SpinnerContext';
 import { toast } from 'react-toastify';
+import ImageViewer from './ImageViewer';
 
 interface PatientGalleryProps {
   patientId: string;
@@ -29,6 +31,8 @@ const PatientGallery: React.FC<PatientGalleryProps> = ({ patientId }) => {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [existingImages, setExistingImages] = useState<PatientImage[]>([]);
   const { showSpinner, hideSpinner } = useSpinner();
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState(0);
 
   useEffect(() => {
     fetchImages();
@@ -146,6 +150,11 @@ const PatientGallery: React.FC<PatientGalleryProps> = ({ patientId }) => {
     );
   };
 
+  const openViewer = (index: number) => {
+    setViewerIndex(index);
+    setIsViewerOpen(true);
+  };
+
   return (
     <div className={styles.container}>
       <div
@@ -195,6 +204,14 @@ const PatientGallery: React.FC<PatientGalleryProps> = ({ patientId }) => {
         <FontAwesomeIcon icon={faSave} /> Salvar
       </button>
 
+      {isViewerOpen && (
+        <ImageViewer
+          images={existingImages}
+          initialIndex={viewerIndex}
+          onClose={() => setIsViewerOpen(false)}
+        />
+      )}
+
       {/* Grouped Images */}
       <div className={styles.existingImagesContainer}>
         {groupImagesByDate().map(([date, images]) => (
@@ -203,7 +220,7 @@ const PatientGallery: React.FC<PatientGalleryProps> = ({ patientId }) => {
               {new Date(date).toLocaleDateString()}
             </h3>
             <div className={styles.imageGrid}>
-              {images.map((image) => (
+              {images.map((image, index) => (
                 <div key={image.id} className={styles.imageWrapper}>
                   <Image
                     src={image.imageUrl}
@@ -212,12 +229,26 @@ const PatientGallery: React.FC<PatientGalleryProps> = ({ patientId }) => {
                     height={160}
                     className={styles.existingImage}
                   />
-                  <button
+                  {/* <button
                     className={styles.deleteButton}
                     onClick={() => handleDeleteImage(image.id)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
-                  </button>
+                  </button> */}
+                  <div className={styles.imageActions}>
+                    <button
+                      className={styles.viewButton}
+                      onClick={() => openViewer(index)}
+                    >
+                      <FontAwesomeIcon icon={faEye} />
+                    </button>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() => handleDeleteImage(image.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
