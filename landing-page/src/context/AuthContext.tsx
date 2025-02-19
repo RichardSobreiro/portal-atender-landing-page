@@ -12,6 +12,7 @@ import axios from 'axios';
 
 interface BearerToken {
   username: string;
+  companyId: string;
 }
 
 interface LoginCredentials {
@@ -24,6 +25,7 @@ interface User {
   accessToken: string;
   refreshToken: string;
   username: string;
+  companyId: string;
 }
 
 interface AuthContextType {
@@ -66,7 +68,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       }
       const token: BearerToken = decodeJwt(accessToken);
       const username: string = token.username;
-      setUser({ accessToken, refreshToken, username });
+      const companyId: string = token.companyId;
+      setUser({ accessToken, refreshToken, username, companyId });
     },
     []
   );

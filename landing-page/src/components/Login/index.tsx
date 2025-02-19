@@ -44,100 +44,103 @@ const LoginPage: React.FC = () => {
   }, [authContext.user, router]);
 
   return (
-    <div className={styles.container}>
-      {isLoading && <div className={styles.spinner}></div>}{' '}
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          const loginApi = authContext.login;
-          showSpinner();
+    <>
+      <ToastContainer />
+      <div className={styles.container}>
+        {isLoading && <div className={styles.spinner}></div>}{' '}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={async (values, { setSubmitting }) => {
+            const loginApi = authContext.login;
+            showSpinner();
 
-          try {
-            await loginApi({
-              username: values.username.trim(),
-              password: values.password,
-              rememberMe: values.rememberMe,
-            });
+            try {
+              await loginApi({
+                username: values.username.trim(),
+                password: values.password,
+                rememberMe: values.rememberMe,
+              });
 
-            toast.success('Login realizado com sucesso!');
-            router.push('/dashboard');
-          } catch (error) {
-            if (error instanceof TypeError) {
-              toast.error(
-                'Falha ao conectar ao servidor. Tente novamente mais tarde.'
-              );
-            } else if (error instanceof Error) {
-              toast.error(error.message);
-            } else {
-              toast.error('Ocorreu um erro inesperado. Tente novamente.');
+              toast.success('Login realizado com sucesso!');
+              router.push('/dashboard');
+            } catch (error) {
+              if (error instanceof TypeError) {
+                toast.error(
+                  'Falha ao conectar ao servidor. Tente novamente mais tarde.'
+                );
+              } else if (error instanceof Error) {
+                toast.error(error.message);
+              } else {
+                toast.error('Ocorreu um erro inesperado. Tente novamente.');
+              }
+            } finally {
+              setSubmitting(false);
+              hideSpinner();
             }
-          } finally {
-            setSubmitting(false);
-            hideSpinner();
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form className={styles.loginForm} noValidate>
-            {' '}
-            <h2>Entrar</h2>
-            <label htmlFor="username">Email</label>
-            <Field
-              type="email"
-              id="username"
-              name="username"
-              className={styles.input}
-            />
-            <ErrorMessage
-              name="username"
-              component="div"
-              className={styles.errorMessage}
-            />
-            <label htmlFor="password">Senha</label>
-            <Field
-              type="password"
-              id="password"
-              name="password"
-              className={styles.input}
-            />
-            <ErrorMessage
-              name="password"
-              component="div"
-              className={styles.errorMessage}
-            />
-            <div className={styles.checkboxContainer}>
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form className={styles.loginForm} noValidate>
+              {' '}
+              <h2>Entrar</h2>
+              <label htmlFor="username">Email</label>
               <Field
-                type="checkbox"
-                name="rememberMe"
-                id="rememberMe"
-                className={styles.checkbox}
+                type="email"
+                id="username"
+                name="username"
+                className={styles.input}
               />
-              <label htmlFor="rememberMe">Mantenha-me logado</label>
-            </div>
-            <button
-              type="submit"
-              className={styles.loginButton}
-              disabled={isSubmitting || isLoading}
-            >
-              {isLoading ? 'Carregando...' : 'Entrar'}
-            </button>
-            <div className={styles.links}>
-              <ClickableText
-                text="Esqueci minha senha"
-                onClick={() => router.push('/esqueci-minha-senha')}
-                className="small_primary"
+              <ErrorMessage
+                name="username"
+                component="div"
+                className={styles.errorMessage}
               />
-              <ClickableText
-                text="Criar uma conta"
-                onClick={() => router.push('/cadastro')}
-                className="small_primary"
+              <label htmlFor="password">Senha</label>
+              <Field
+                type="password"
+                id="password"
+                name="password"
+                className={styles.input}
               />
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
+              <ErrorMessage
+                name="password"
+                component="div"
+                className={styles.errorMessage}
+              />
+              <div className={styles.checkboxContainer}>
+                <Field
+                  type="checkbox"
+                  name="rememberMe"
+                  id="rememberMe"
+                  className={styles.checkbox}
+                />
+                <label htmlFor="rememberMe">Mantenha-me logado</label>
+              </div>
+              <button
+                type="submit"
+                className={styles.loginButton}
+                disabled={isSubmitting || isLoading}
+              >
+                {isLoading ? 'Carregando...' : 'Entrar'}
+              </button>
+              <div className={styles.links}>
+                <ClickableText
+                  text="Esqueci minha senha"
+                  onClick={() => router.push('/esqueci-minha-senha')}
+                  className="small_primary"
+                />
+                <ClickableText
+                  text="Criar uma conta"
+                  onClick={() => router.push('/cadastro')}
+                  className="small_primary"
+                />
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </>
   );
 };
 

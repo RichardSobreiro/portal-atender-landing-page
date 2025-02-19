@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axiosInstance from '@/services/axiosInstance';
 import withAuth from '@/components/HoC/WithAuth';
+import { useAuth } from '@/context/AuthContext';
 
 interface ProcedureFormValues {
   name: string;
@@ -30,6 +31,7 @@ interface ProcedureFormValues {
 const CreateProcedure: React.FC = () => {
   const router = useRouter();
   const { showSpinner, hideSpinner } = useSpinner();
+  const authContext = useAuth();
 
   const validationSchema = Yup.object({
     name: Yup.string().required('Nome é obrigatório'),
@@ -50,11 +52,13 @@ const CreateProcedure: React.FC = () => {
     values: ProcedureFormValues,
     { setSubmitting }: FormikHelpers<ProcedureFormValues>
   ) => {
+    const companyId = authContext.user?.companyId;
     showSpinner();
     try {
       const payload = {
         ...values,
         duration: values.durationHours * 60 + values.durationMinutes, // Convert to total minutes
+        companyId: companyId,
       };
 
       await axiosInstance.post('/procedures', payload);
