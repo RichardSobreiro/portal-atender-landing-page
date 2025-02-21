@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Pagination from '@/general/Pagination';
 import withAuth from '@/components/HoC/WithAuth';
 import { useAuth } from '@/context/AuthContext';
+import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
 
 interface Procedure {
   id: string;
@@ -37,6 +38,11 @@ const ProceduresList: React.FC = () => {
   const router = useRouter();
   const hasFetched = useRef(false);
   const authContext = useAuth();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProcedure, setSelectedProcedure] = useState<Procedure | null>(
+    null
+  );
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -103,6 +109,37 @@ const ProceduresList: React.FC = () => {
     router.push(`/atendimentos/procedimentos/${id}/editar`);
   };
 
+  const handleDeleteClick = (procedure: Procedure, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedProcedure(procedure);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedProcedure) return;
+
+    try {
+      showSpinner();
+      await axiosInstance.delete(`/procedures/${selectedProcedure.id}`);
+      toast.success(
+        `Procedimento ${selectedProcedure.name} excluído com sucesso!`
+      );
+
+      fetchProcedures();
+    } catch (error) {
+      toast.error('Erro ao excluir o procedimento.');
+    } finally {
+      hideSpinner();
+      setIsModalOpen(false);
+      setSelectedProcedure(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsModalOpen(false);
+    setSelectedProcedure(null);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -147,7 +184,11 @@ const ProceduresList: React.FC = () => {
         <tbody>
           {Array.isArray(procedures) && procedures.length > 0 ? (
             procedures.map((procedure) => (
-              <tr key={procedure.id} className={styles.clickableRow}>
+              <tr
+                key={procedure.id}
+                className={styles.clickableRow}
+                onClick={() => navigateToEditProcedure(procedure.id)}
+              >
                 <td>
                   <span
                     className={styles.colorBox}
@@ -172,6 +213,7 @@ const ProceduresList: React.FC = () => {
                   <FontAwesomeIcon
                     icon={faTrash}
                     className={styles.deleteIcon}
+                    onClick={(e) => handleDeleteClick(procedure, e)}
                   />
                 </td>
               </tr>
@@ -185,6 +227,13 @@ const ProceduresList: React.FC = () => {
           )}
         </tbody>
       </table>
+      <DeleteConfirmationModal
+        isOpen={isModalOpen}
+        procedureName={selectedProcedure?.name || ''}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+      />
+
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
