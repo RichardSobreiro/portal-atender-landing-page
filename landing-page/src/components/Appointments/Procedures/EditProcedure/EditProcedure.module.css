@@ -29,6 +29,12 @@
   flex: 1;
 }
 
+.durationGroup {
+  display: flex;
+  flex: 2;
+  gap: 10px;
+}
+
 .backButton {
   background-color: var(--color-muted-text);
   color: var(--color-surface);
@@ -49,7 +55,7 @@
 }
 
 /* Save Button */
-.saveButtonHeader {
+.saveButton {
   background-color: var(--color-primary);
   color: var(--color-surface);
   border: none;
@@ -64,7 +70,7 @@
   min-width: 90px;
 }
 
-.saveButtonHeader:hover {
+.saveButton:hover {
   background-color: var(--color-secondary);
 }
 
@@ -85,37 +91,23 @@
   display: flex;
   gap: 10px;
   width: 100%;
+  margin-top: 10px;
 }
 
-/* Name, Price, Cost Row */
+/* Name and Price Row */
 .nameInput {
   flex: 2;
   min-width: 50%;
 }
 
-.priceInput,
-.costInput {
+.priceInput {
   flex: 1;
 }
 
-/* Categoria and Duração Row */
+/* Categoria Row */
 .categoryInput {
   flex: 2; /* Takes 50% width */
   min-width: 50%;
-}
-
-.durationGroup {
-  display: flex;
-  flex: 2;
-  gap: 10px;
-}
-
-/* Ativo and Cor Row */
-.activeColorRow {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-top: 10px;
 }
 
 /* Cor Picker */
@@ -152,6 +144,7 @@
   transform: scale(1.2);
 }
 
+/* Input Styling */
 .inputGroup {
   display: flex;
   flex-direction: column;
@@ -178,45 +171,19 @@
   height: 80px;
 }
 
-/** @format */
+/* Error message styling */
+.errorMessage {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  margin-top: 5px;
+}
 
-/** @format */
-
+/* Save Button at Bottom */
 .saveButtonContainer {
   display: flex;
   justify-content: flex-end;
   width: 100%;
   margin-top: 20px;
-}
-
-.saveButton {
-  background-color: var(--color-primary);
-  color: var(--color-surface);
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: var(--font-size-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; /* Space between icon and text */
-  min-width: 90px;
-}
-
-.saveButton:hover {
-  background-color: var(--color-secondary);
-}
-
-.saveIcon {
-  font-size: 16px;
-}
-
-/** Error message styling */
-.errorMessage {
-  color: var(--color-accent);
-  font-size: var(--font-size-sm);
-  margin-top: 5px;
 }
 
 /* Responsive Styles */
@@ -225,22 +192,17 @@
     flex-direction: column;
   }
 
-  .activeColorRow {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .nameInput,
   .categoryInput {
     min-width: 100%;
   }
 
-  .durationGroup {
-    flex-direction: column;
-    gap: 0;
+  .saveButtonContainer {
+    justify-content: center;
+    min-width: 0;
   }
 
-  .saveButtonHeader {
+  .saveButton {
     min-width: 0;
   }
 
@@ -251,7 +213,16 @@
 
 @media (max-width: 850px) {
   .backButton span,
-  .saveButtonHeader span {
+  .saveButton span {
     display: none;
+  }
+
+  .saveButtonContainer {
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .saveButton {
+    min-width: 0;
   }
 }

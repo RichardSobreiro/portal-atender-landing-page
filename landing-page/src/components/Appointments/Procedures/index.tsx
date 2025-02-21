@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Pagination from '@/general/Pagination';
 import withAuth from '@/components/HoC/WithAuth';
+import { useAuth } from '@/context/AuthContext';
 
 interface Procedure {
   id: string;
@@ -29,42 +30,68 @@ interface Procedure {
 const ProceduresList: React.FC = () => {
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { showSpinner, hideSpinner } = useSpinner();
   const router = useRouter();
   const hasFetched = useRef(false);
+  const authContext = useAuth();
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500); // 🔄 500ms delay
+
+    return () => {
+      clearTimeout(handler); // ✅ Clear timeout if user keeps typing
+    };
+  }, [searchTerm]);
 
   const fetchProcedures = useCallback(async () => {
     try {
+      const companyId = authContext.user?.companyId;
       showSpinner();
       const response = await axiosInstance.get('/procedures', {
-        params: { name: searchTerm, page: currentPage, limit: 10 },
+        params: {
+          searchTerm: debouncedSearchTerm,
+          page: currentPage,
+          limit: 10,
+          companyId: companyId,
+        },
       });
 
-      setProcedures(response.data.data);
+      const sortedProcedures = response.data.data.sort(
+        (a: Procedure, b: Procedure) =>
+          a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' })
+      );
+
+      setProcedures(sortedProcedures);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error('Erro ao carregar procedimentos:', error);
       toast.error('Erro ao carregar procedimentos.');
     } finally {
       hideSpinner();
+      hasFetched.current = false;
     }
-  }, [searchTerm, currentPage, showSpinner, hideSpinner]);
+  }, [debouncedSearchTerm, currentPage, showSpinner, hideSpinner]);
 
   useEffect(() => {
     if (!hasFetched.current) {
       hasFetched.current = true;
       fetchProcedures();
+    } else {
+      fetchProcedures();
     }
-  }, [fetchProcedures]);
+  }, [currentPage, debouncedSearchTerm]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
     fetchProcedures();
   };
 
@@ -130,7 +157,12 @@ const ProceduresList: React.FC = () => {
                 <td>{procedure.name}</td>
                 <td>{procedure.category}</td>
                 <td>{procedure.duration} min</td>
-                <td>R$ {procedure.price.toFixed(2)}</td>
+                <td>
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  }).format(procedure.price)}
+                </td>
                 <td className={styles.actions}>
                   <FontAwesomeIcon
                     icon={faEdit}

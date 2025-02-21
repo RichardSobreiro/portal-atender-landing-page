@@ -73,3 +73,28 @@ export const formatCpfCnpj = (value: string) => {
       .replace(/\/(\d{4})(\d)/, '/$1-$2');
   }
 };
+
+export const formatCurrency = (value: string): string => {
+  // Remove any non-numeric characters except commas
+  let numericValue = value.replace(/\D/g, '');
+
+  // Ensure at least two decimal places
+  while (numericValue.length < 3) {
+    numericValue = '0' + numericValue;
+  }
+
+  // Remove unnecessary leading zeros if the length is greater than 5 (like "001,59")
+  if (value.length > 5) {
+    while (numericValue.length > 3 && numericValue.startsWith('0')) {
+      numericValue = numericValue.substring(1); // Remove first zero
+    }
+  }
+
+  // Add thousands separator (Brazilian format)
+  const integerPart = numericValue
+    .slice(0, -2)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const decimalPart = numericValue.slice(-2);
+
+  return `${integerPart},${decimalPart}`;
+};
