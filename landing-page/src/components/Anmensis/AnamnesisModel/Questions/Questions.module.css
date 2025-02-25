@@ -1,0 +1,60 @@
+/** @format */
+
+.questionContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-surface);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.15);
+}
+
+/* Drag Handle */
+.dragHandle {
+  cursor: grab;
+  padding: 8px;
+  color: var(--color-muted-text);
+}
+
+/* Select Dropdown for Question Type */
+.questionTypeSelect {
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  color: var(--color-primary);
+}
+
+/* Input Field for Question Text */
+.questionInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Delete Button */
+.deleteButton {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.deleteButton:hover {
+  background-color: #d32f2f;
+}

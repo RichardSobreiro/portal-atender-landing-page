@@ -8,6 +8,7 @@
   --color-surface: #ffffff; /* White */
   --color-text: #333333; /* Dark Gray */
   --color-muted-text: #888888; /* Gray */
+  --color-muted-light: #ededed;
   --color-highlight: #ffd700; /* Yellow */
 
   /* Typography */

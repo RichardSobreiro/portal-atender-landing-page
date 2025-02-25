@@ -1,0 +1,75 @@
+/** @format */
+
+.groupContainer {
+  background-color: var(--color-surface);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.2);
+}
+
+/* Group Header */
+.groupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.groupNameInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  color: var(--color-primary);
+}
+
+.deleteGroupButton {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease-in-out;
+}
+
+.deleteGroupButton:hover {
+  color: #d32f2f;
+}
+
+/* Questions List */
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Add Question Button */
+.addQuestionButton {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.addQuestionButton:hover {
+  background-color: var(--color-secondary);
+}
