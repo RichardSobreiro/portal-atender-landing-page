@@ -23,8 +23,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
       <div className={styles.modal}>
         <h2 className={styles.title}>Confirmação</h2>
         <p className={styles.message}>
-          Você tem certeza que deseja excluir o procedimento{' '}
-          <strong>{procedureName}</strong>?
+          Você tem certeza que deseja excluir <strong>{procedureName}</strong>?
         </p>
         <div className={styles.buttonContainer}>
           <button className={styles.confirmButton} onClick={onConfirm}>

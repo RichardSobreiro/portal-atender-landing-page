@@ -1,10 +1,14 @@
 /** @format */
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Questions.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import YesNoQuestion from '../Questions/YesNoQuestion';
+import TextQuestion from '../Questions/TextQuestion';
+import NumberQuestion from '../Questions/NumberQuestion';
+import MultipleChoiceQuestion from '../Questions/MultipleChoiceQuestion';
+import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
 
 interface Question {
   id: string;
@@ -32,6 +36,18 @@ interface QuestionsProps {
     startIndex: number,
     endIndex: number
   ) => void;
+  onAddOption: (groupId: string, questionId: string) => void;
+  onUpdateOption: (
+    groupId: string,
+    questionId: string,
+    optionId: string,
+    newText: string
+  ) => void;
+  onRemoveOption: (
+    groupId: string,
+    questionId: string,
+    optionId: string
+  ) => void;
 }
 
 const questionTypes = [
@@ -50,28 +66,35 @@ const Questions: React.FC<QuestionsProps> = ({
   onUpdateQuestion,
   onDeleteQuestion,
   onReorderQuestions,
+  onUpdateOption,
+  onAddOption,
+  onRemoveOption,
 }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   return (
     <div className={styles.questionContainer}>
-      {/* Drag Handle */}
-      <div className={styles.dragHandle} onMouseDown={() => {}}>
-        <FontAwesomeIcon icon={faGripVertical} />
-      </div>
+      <div className={styles.questionTypeSelectContainer}>
+        {/* Drag Handle */}
+        <div className={styles.dragHandle}>
+          <FontAwesomeIcon icon={faGripVertical} />
+        </div>
 
-      {/* Question Type Selection */}
-      <select
-        value={question.type}
-        onChange={(e) =>
-          onUpdateQuestion(groupId, question.id, 'type', e.target.value)
-        }
-        className={styles.questionTypeSelect}
-      >
-        {questionTypes.map((q) => (
-          <option key={q.value} value={q.value}>
-            {q.label}
-          </option>
-        ))}
-      </select>
+        {/* Question Type Selection */}
+        <select
+          value={question.type}
+          onChange={(e) =>
+            onUpdateQuestion(groupId, question.id, 'type', e.target.value)
+          }
+          className={styles.questionTypeSelect}
+        >
+          {questionTypes.map((q) => (
+            <option key={q.value} value={q.value}>
+              {q.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Render the Correct Question Type Component */}
       {question.type === 'yesno' && (
@@ -84,13 +107,58 @@ const Questions: React.FC<QuestionsProps> = ({
         />
       )}
 
+      {question.type === 'text' && (
+        <TextQuestion
+          groupId={groupId}
+          questionId={question.id}
+          questionText={question.text}
+          required={question.required}
+          onUpdateQuestion={onUpdateQuestion}
+        />
+      )}
+
+      {question.type === 'number' && (
+        <NumberQuestion
+          groupId={groupId}
+          questionId={question.id}
+          questionText={question.text}
+          required={question.required}
+          onUpdateQuestion={onUpdateQuestion}
+        />
+      )}
+
+      {question.type === 'multiple_choice' && (
+        <MultipleChoiceQuestion
+          groupId={groupId}
+          questionId={question.id}
+          questionText={question.text}
+          required={question.required}
+          options={question.options || []}
+          onUpdateQuestion={onUpdateQuestion}
+          onUpdateOption={onUpdateOption!}
+          onAddOption={onAddOption!}
+          onRemoveOption={onRemoveOption!}
+        />
+      )}
+
       {/* Delete Question Button */}
       <button
         className={styles.deleteButton}
-        onClick={() => onDeleteQuestion(groupId, question.id)}
+        onClick={() => setIsDeleteModalOpen(true)}
       >
         <FontAwesomeIcon icon={faTrash} />
       </button>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        procedureName={'esta pergunta'}
+        onConfirm={() => {
+          onDeleteQuestion(groupId, question.id);
+          setIsDeleteModalOpen(false);
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };

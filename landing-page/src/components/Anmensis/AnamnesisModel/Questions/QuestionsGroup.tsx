@@ -5,6 +5,7 @@ import styles from './QuestionsGroup.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Questions from './Questions';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 interface Question {
   id: string;
@@ -34,6 +35,18 @@ interface QuestionsGroupProps {
     startIndex: number,
     endIndex: number
   ) => void;
+  onAddOption: (groupId: string, questionId: string) => void;
+  onUpdateOption: (
+    groupId: string,
+    questionId: string,
+    optionId: string,
+    newText: string
+  ) => void;
+  onRemoveOption: (
+    groupId: string,
+    questionId: string,
+    optionId: string
+  ) => void;
 }
 
 const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
@@ -46,7 +59,15 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
   onUpdateQuestion,
   onDeleteQuestion,
   onReorderQuestions,
+  onAddOption,
+  onUpdateOption,
+  onRemoveOption,
 }) => {
+  const handleDragEnd = (result: any) => {
+    if (!result.destination) return; // If dropped outside the list, do nothing
+    onReorderQuestions(groupId, result.source.index, result.destination.index);
+  };
+
   return (
     <div className={styles.groupContainer}>
       {/* Group Header */}
@@ -66,23 +87,50 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
         </button>
       </div>
 
-      {/* Questions List */}
-      <div className={styles.questionsList}>
-        {questions
-          .sort((a, b) => a.order - b.order) // Ensure order consistency
-          .map((question, index) => (
-            <Questions
-              key={question.id}
-              groupId={groupId}
-              question={question}
-              onUpdateQuestion={onUpdateQuestion}
-              onDeleteQuestion={onDeleteQuestion}
-              onReorderQuestions={onReorderQuestions}
-              questionIndex={index}
-              totalQuestions={questions.length}
-            />
-          ))}
-      </div>
+      {/* Questions List with Drag & Drop */}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId={groupId}>
+          {(provided: any) => (
+            <div
+              className={styles.questionsList}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {questions
+                .sort((a, b) => a.order - b.order) // Ensure order consistency
+                .map((question, index) => (
+                  <Draggable
+                    key={question.id}
+                    draggableId={question.id}
+                    index={index}
+                  >
+                    {(provided: any) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Questions
+                          groupId={groupId}
+                          question={question}
+                          onUpdateQuestion={onUpdateQuestion}
+                          onDeleteQuestion={onDeleteQuestion}
+                          onReorderQuestions={onReorderQuestions}
+                          questionIndex={index}
+                          totalQuestions={questions.length}
+                          onAddOption={onAddOption}
+                          onUpdateOption={onUpdateOption}
+                          onRemoveOption={onRemoveOption}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       {/* Add Question Button */}
       <button

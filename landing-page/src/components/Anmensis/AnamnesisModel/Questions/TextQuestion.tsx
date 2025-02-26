@@ -1,9 +1,9 @@
 /** @format */
 
 import React from 'react';
-import styles from './YesNoQuestion.module.css';
+import styles from './TextQuestion.module.css';
 
-interface YesNoQuestionProps {
+interface TextQuestionProps {
   groupId: string;
   questionId: string;
   questionText: string;
@@ -16,7 +16,7 @@ interface YesNoQuestionProps {
   ) => void;
 }
 
-const YesNoQuestion: React.FC<YesNoQuestionProps> = ({
+const TextQuestion: React.FC<TextQuestionProps> = ({
   groupId,
   questionId,
   questionText,
@@ -24,7 +24,7 @@ const YesNoQuestion: React.FC<YesNoQuestionProps> = ({
   onUpdateQuestion,
 }) => {
   return (
-    <div className={styles.yesNoContainer}>
+    <div className={styles.textQuestionContainer}>
       <div className={styles.inputContainer}>
         {/* Question Text Input */}
         <input
@@ -37,15 +37,13 @@ const YesNoQuestion: React.FC<YesNoQuestionProps> = ({
           className={styles.input}
         />
 
-        {/* Yes/No Buttons (Preview Only) */}
-        <div className={styles.buttonGroup}>
-          <button type="button" className={styles.yesButton}>
-            Sim
-          </button>
-          <button type="button" className={styles.noButton}>
-            Não
-          </button>
-        </div>
+        {/* Text Answer Preview */}
+        <input
+          type="text"
+          placeholder="Resposta do usuário..."
+          className={styles.answerPreview}
+          disabled
+        />
       </div>
 
       {/* Required Checkbox */}
@@ -64,4 +62,4 @@ const YesNoQuestion: React.FC<YesNoQuestionProps> = ({
   );
 };
 
-export default YesNoQuestion;
+export default TextQuestion;

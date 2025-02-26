@@ -1,6 +1,6 @@
 /** @format */
 
-.yesNoContainer {
+.multipleChoiceContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -30,30 +30,65 @@
   color: var(--color-text);
 }
 
-/* Yes/No Buttons */
-.buttonGroup {
+/* Options Container */
+.optionsContainer {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Option Row */
+.optionRow {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.yesButton,
-.noButton {
-  padding: 6px 12px;
-  border: none;
+/* Option Input */
+.optionInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
   border-radius: 6px;
-  cursor: pointer;
   font-size: var(--font-size-base);
-  min-width: 60px;
+  background-color: var(--color-surface);
+  color: var(--color-text);
 }
 
-.yesButton {
-  background-color: var(--color-primary);
-  color: var(--color-surface);
-}
-
-.noButton {
+/* Delete Option Button */
+.deleteOptionButton {
   background-color: var(--color-accent);
   color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteOptionButton:hover {
+  background-color: #d32f2f;
+}
+
+/* Add Option Button */
+.addOptionButton {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.addOptionButton:hover {
+  background-color: var(--color-secondary);
 }
 
 /* Required Checkbox */

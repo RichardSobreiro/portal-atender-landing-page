@@ -182,6 +182,89 @@ const CreateAnamnesisModel: React.FC = () => {
     }));
   };
 
+  const addOption = (groupId: string, questionId: string) => {
+    setAnamnesisForm((prev) => ({
+      ...prev,
+      groups: prev.groups.map((group) => {
+        if (group.id !== groupId) return group;
+
+        return {
+          ...group,
+          questions: group.questions.map((question) => {
+            if (question.id !== questionId) return question;
+
+            const newOption = {
+              id: crypto.randomUUID(),
+              text: '',
+            };
+
+            return {
+              ...question,
+              options: [...(question.options || []), newOption],
+            };
+          }),
+        };
+      }),
+    }));
+  };
+
+  // Update an option text
+  const updateOption = (
+    groupId: string,
+    questionId: string,
+    optionId: string,
+    newText: string
+  ) => {
+    setAnamnesisForm((prev) => ({
+      ...prev,
+      groups: prev.groups.map((group) => {
+        if (group.id !== groupId) return group;
+
+        return {
+          ...group,
+          questions: group.questions.map((question) => {
+            if (question.id !== questionId) return question;
+
+            return {
+              ...question,
+              options: question.options?.map((option) =>
+                option.id === optionId ? { ...option, text: newText } : option
+              ),
+            };
+          }),
+        };
+      }),
+    }));
+  };
+
+  // Remove an option from a multiple-choice question
+  const removeOption = (
+    groupId: string,
+    questionId: string,
+    optionId: string
+  ) => {
+    setAnamnesisForm((prev) => ({
+      ...prev,
+      groups: prev.groups.map((group) => {
+        if (group.id !== groupId) return group;
+
+        return {
+          ...group,
+          questions: group.questions.map((question) => {
+            if (question.id !== questionId) return question;
+
+            return {
+              ...question,
+              options: question.options?.filter(
+                (option) => option.id !== optionId
+              ),
+            };
+          }),
+        };
+      }),
+    }));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
@@ -244,6 +327,9 @@ const CreateAnamnesisModel: React.FC = () => {
                 onUpdateQuestion={updateQuestion}
                 onDeleteQuestion={deleteQuestion}
                 onReorderQuestions={reorderQuestions}
+                onAddOption={addOption}
+                onUpdateOption={updateOption}
+                onRemoveOption={removeOption}
               />
             ))}
 

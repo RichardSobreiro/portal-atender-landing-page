@@ -229,7 +229,7 @@ const ProceduresList: React.FC = () => {
       </table>
       <DeleteConfirmationModal
         isOpen={isModalOpen}
-        procedureName={selectedProcedure?.name || ''}
+        procedureName={`o procedimento ${selectedProcedure?.name}` || ''}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />

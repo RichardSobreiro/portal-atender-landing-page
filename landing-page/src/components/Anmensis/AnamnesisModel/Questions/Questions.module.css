@@ -13,11 +13,19 @@
   border: 1px solid rgba(var(--color-primary-rgb), 0.15);
 }
 
+.questionTypeSelectContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 /* Drag Handle */
 .dragHandle {
   cursor: grab;
   padding: 8px;
   color: var(--color-muted-text);
+  justify-self: start;
 }
 
 /* Select Dropdown for Question Type */
@@ -57,4 +65,20 @@
 
 .deleteButton:hover {
   background-color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+  .questionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--color-surface);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 800px;
+    border: 1px solid rgba(var(--color-primary-rgb), 0.15);
+  }
 }
