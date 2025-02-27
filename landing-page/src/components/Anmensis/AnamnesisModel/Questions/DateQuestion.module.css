@@ -1,0 +1,52 @@
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--color-surface);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.15);
+}
+
+.input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.dateInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  color: var(--color-muted-text);
+  color: var(--color-text);
+  text-align: center;
+}
+
+.requiredContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.requiredLabel {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.requiredCheckbox {
+  transform: scale(1.2);
+  width: 10%;
+}

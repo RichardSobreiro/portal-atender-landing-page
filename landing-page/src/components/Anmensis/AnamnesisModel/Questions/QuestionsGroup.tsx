@@ -115,9 +115,6 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
                           question={question}
                           onUpdateQuestion={onUpdateQuestion}
                           onDeleteQuestion={onDeleteQuestion}
-                          onReorderQuestions={onReorderQuestions}
-                          questionIndex={index}
-                          totalQuestions={questions.length}
                           onAddOption={onAddOption}
                           onUpdateOption={onUpdateOption}
                           onRemoveOption={onRemoveOption}
@@ -132,13 +129,15 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
         </Droppable>
       </DragDropContext>
 
-      {/* Add Question Button */}
-      <button
-        className={styles.addQuestionButton}
-        onClick={() => onAddQuestion(groupId)}
-      >
-        + Adicionar Pergunta
-      </button>
+      <div className={styles.addQuestionButtonContainer}>
+        {/* Add Question Button */}
+        <button
+          className={styles.addQuestionButton}
+          onClick={() => onAddQuestion(groupId)}
+        >
+          + Adicionar Pergunta
+        </button>
+      </div>
     </div>
   );
 };

@@ -333,14 +333,27 @@ const CreateAnamnesisModel: React.FC = () => {
               />
             ))}
 
-            <button
-              type="button"
-              className={styles.addGroupButton}
-              onClick={addGroup}
-            >
-              <FontAwesomeIcon icon={faPlus} className={styles.icon} />
-              Adicionar Grupo
-            </button>
+            <div className={styles.addGroupButtonContainer}>
+              <button
+                type="button"
+                className={styles.addGroupButton}
+                onClick={addGroup}
+              >
+                <FontAwesomeIcon icon={faPlus} className={styles.icon} />
+                Adicionar Grupo
+              </button>
+            </div>
+
+            <div className={styles.saveButtonContainer}>
+              <button
+                type="submit"
+                form="createAnamnesisModelForm"
+                className={styles.saveButton}
+              >
+                <FontAwesomeIcon icon={faSave} className={styles.icon} />
+                Salvar
+              </button>
+            </div>
           </Form>
         )}
       </Formik>

@@ -1,0 +1,132 @@
+/** @format */
+
+.dropdownContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: var(--color-surface);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.15);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+/* Question Text Input */
+.input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Options Container */
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Option Row */
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Option Input */
+.optionInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Delete Option Button */
+.deleteOptionButton {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteOptionButton:hover {
+  background-color: #d32f2f;
+}
+
+/* Add Option Button */
+.addOptionButton {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.addOptionButton:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Required Checkbox */
+.requiredContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.requiredLabel {
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.requiredCheckbox {
+  transform: scale(1.2);
+  width: 10%;
+}
+
+/* Dropdown Preview */
+.dropdownPreview {
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  cursor: not-allowed;
+  width: 100%;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

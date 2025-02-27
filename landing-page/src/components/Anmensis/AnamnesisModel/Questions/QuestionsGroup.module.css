@@ -53,11 +53,16 @@
   gap: 10px;
 }
 
+.addQuestionButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* Add Question Button */
 .addQuestionButton {
-  background-color: var(--color-primary);
-  color: var(--color-surface);
-  border: none;
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 3px solid rgba(var(--color-primary-rgb), 0.4);
   border-radius: 6px;
   padding: 8px 12px;
   cursor: pointer;
@@ -66,10 +71,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
   margin-top: 10px;
 }
 
 .addQuestionButton:hover {
   background-color: var(--color-secondary);
+  color: var(--color-background);
+  border: 3px solid rgba(var(--color-secondary-rgb), 0.4);
 }

@@ -8,7 +8,10 @@ import YesNoQuestion from '../Questions/YesNoQuestion';
 import TextQuestion from '../Questions/TextQuestion';
 import NumberQuestion from '../Questions/NumberQuestion';
 import MultipleChoiceQuestion from '../Questions/MultipleChoiceQuestion';
+import DropdownQuestion from '../Questions/DropdownQuestion';
 import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
+import DateQuestion from './DateQuestion';
+import TextAreaQuestion from './TextAreaQuestion';
 
 interface Question {
   id: string;
@@ -22,8 +25,6 @@ interface Question {
 interface QuestionsProps {
   groupId: string;
   question: Question;
-  questionIndex: number;
-  totalQuestions: number;
   onUpdateQuestion: (
     groupId: string,
     questionId: string,
@@ -31,11 +32,6 @@ interface QuestionsProps {
     value: any
   ) => void;
   onDeleteQuestion: (groupId: string, questionId: string) => void;
-  onReorderQuestions: (
-    groupId: string,
-    startIndex: number,
-    endIndex: number
-  ) => void;
   onAddOption: (groupId: string, questionId: string) => void;
   onUpdateOption: (
     groupId: string,
@@ -55,17 +51,16 @@ const questionTypes = [
   { label: 'Texto', value: 'text' },
   { label: 'Número Inteiro', value: 'number' },
   { label: 'Múltipla Escolha', value: 'multiple_choice' },
-  { label: 'Dropdown', value: 'dropdown' },
+  { label: 'Opções', value: 'dropdown' },
+  { label: 'Data', value: 'date' },
+  { label: 'Texto Longo', value: 'textarea' },
 ];
 
 const Questions: React.FC<QuestionsProps> = ({
   groupId,
   question,
-  questionIndex,
-  totalQuestions,
   onUpdateQuestion,
   onDeleteQuestion,
-  onReorderQuestions,
   onUpdateOption,
   onAddOption,
   onRemoveOption,
@@ -138,6 +133,40 @@ const Questions: React.FC<QuestionsProps> = ({
           onUpdateOption={onUpdateOption!}
           onAddOption={onAddOption!}
           onRemoveOption={onRemoveOption!}
+        />
+      )}
+
+      {question.type === 'dropdown' && (
+        <DropdownQuestion
+          groupId={groupId}
+          questionId={question.id}
+          questionText={question.text}
+          required={question.required}
+          options={question.options || []}
+          onUpdateQuestion={onUpdateQuestion}
+          onUpdateOption={onUpdateOption!}
+          onAddOption={onAddOption!}
+          onRemoveOption={onRemoveOption!}
+        />
+      )}
+
+      {question.type === 'date' && (
+        <DateQuestion
+          groupId={groupId}
+          questionId={question.id}
+          questionText={question.text}
+          required={question.required}
+          onUpdateQuestion={onUpdateQuestion}
+        />
+      )}
+
+      {question.type === 'textarea' && (
+        <TextAreaQuestion
+          groupId={groupId}
+          questionId={question.id}
+          questionText={question.text}
+          required={question.required}
+          onUpdateQuestion={onUpdateQuestion}
         />
       )}
 
