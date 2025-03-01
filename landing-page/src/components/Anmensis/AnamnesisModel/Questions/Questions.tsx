@@ -174,6 +174,7 @@ const Questions: React.FC<QuestionsProps> = ({
       <button
         className={styles.deleteButton}
         onClick={() => setIsDeleteModalOpen(true)}
+        type="button"
       >
         <FontAwesomeIcon icon={faTrash} />
       </button>

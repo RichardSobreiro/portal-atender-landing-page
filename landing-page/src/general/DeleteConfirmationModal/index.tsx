@@ -5,14 +5,14 @@ import styles from './DeleteConfirmationModal.module.css';
 
 interface DeleteConfirmationModalProps {
   isOpen: boolean;
-  procedureName: string;
+  itemToBeDeletedDescription: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   isOpen,
-  procedureName,
+  itemToBeDeletedDescription,
   onConfirm,
   onCancel,
 }) => {
@@ -23,7 +23,8 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
       <div className={styles.modal}>
         <h2 className={styles.title}>Confirmação</h2>
         <p className={styles.message}>
-          Você tem certeza que deseja excluir <strong>{procedureName}</strong>?
+          Você tem certeza que deseja excluir{' '}
+          <strong>{itemToBeDeletedDescription}</strong>?
         </p>
         <div className={styles.buttonContainer}>
           <button className={styles.confirmButton} onClick={onConfirm}>

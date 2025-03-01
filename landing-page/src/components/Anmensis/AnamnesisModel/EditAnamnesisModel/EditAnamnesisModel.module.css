@@ -68,6 +68,13 @@
   background-color: var(--color-secondary);
 }
 
+.loadingMessage {
+  font-size: var(--font-size-base);
+  color: var(--color-muted-text);
+  text-align: center;
+  margin-top: 20px;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .titleContainer {
@@ -80,4 +87,23 @@
     width: 100%;
     justify-content: center;
   }
+}
+
+.deleteButtonHeader {
+  background-color: var(--color-accent); /* 🔴 Red button */
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.deleteButtonHeader:hover {
+  background-color: darkred;
 }

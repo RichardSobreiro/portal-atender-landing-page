@@ -1,12 +1,17 @@
 /** @format */
-
-import React, { useEffect, useState, useCallback } from 'react';
+import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styles from './AnamnesisModelList.module.css';
 import axiosInstance from '@/services/axiosInstance';
 import { useSpinner } from '@/context/SpinnerContext';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEdit,
+  faTrash,
+  faSearch,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import withAuth from '@/components/HoC/WithAuth';
@@ -15,19 +20,36 @@ interface AnamnesisModel {
   id: string;
   name: string;
   type: string;
+  companyId?: string | null;
 }
 
 const AnamnesisModelList: React.FC = () => {
   const [anamnesisModels, setAnamnesisModels] = useState<AnamnesisModel[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const { showSpinner, hideSpinner } = useSpinner();
   const router = useRouter();
+  const hasFetched = useRef(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<AnamnesisModel | null>(
+    null
+  );
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
 
   const fetchAnamnesisModels = useCallback(async () => {
     try {
       showSpinner();
       const response = await axiosInstance.get('/anamnesis-models', {
-        params: { searchTerm },
+        params: { searchTerm: debouncedSearchTerm },
       });
       setAnamnesisModels(response.data);
     } catch (error) {
@@ -35,12 +57,18 @@ const AnamnesisModelList: React.FC = () => {
       toast.error('Erro ao carregar modelos de anamnese.');
     } finally {
       hideSpinner();
+      hasFetched.current = false;
     }
-  }, [searchTerm, showSpinner, hideSpinner]);
+  }, [debouncedSearchTerm, showSpinner, hideSpinner]);
 
   useEffect(() => {
-    //fetchAnamnesisModels();
-  }, [fetchAnamnesisModels]);
+    if (!hasFetched.current) {
+      hasFetched.current = true;
+      fetchAnamnesisModels();
+    } else {
+      fetchAnamnesisModels();
+    }
+  }, [debouncedSearchTerm]);
 
   const navigateToCreate = () => {
     router.push('/pacientes/anamneses/modelos/novo');
@@ -52,6 +80,37 @@ const AnamnesisModelList: React.FC = () => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+  };
+
+  const openDeleteModal = (model: AnamnesisModel) => {
+    setSelectedModel(model);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedModel) return;
+
+    try {
+      showSpinner();
+      await axiosInstance.delete(`/anamnesis-models/${selectedModel.id}`);
+      toast.success(`Modelo "${selectedModel.name}" excluído com sucesso!`);
+
+      // Refresh list after deletion
+      fetchAnamnesisModels();
+    } catch (error: any) {
+      const errorMessages = error.response?.data?.message;
+
+      if (Array.isArray(errorMessages)) {
+        errorMessages.forEach((msg) => toast.error(msg));
+      } else {
+        const errorMessage = errorMessages || 'Ocorreu um erro inesperado.';
+        toast.error(errorMessage);
+      }
+    } finally {
+      hideSpinner();
+      setIsDeleteModalOpen(false);
+      setSelectedModel(null);
+    }
   };
 
   return (
@@ -85,8 +144,25 @@ const AnamnesisModelList: React.FC = () => {
         <tbody>
           {anamnesisModels.length > 0 ? (
             anamnesisModels.map((model) => (
-              <tr key={model.id}>
-                <td>{model.name}</td>
+              <tr
+                key={model.id}
+                className={styles.tooltipContainer}
+                data-tooltip={
+                  model.companyId
+                    ? 'Modelo personalizado (Criado pela sua empresa)'
+                    : 'Modelo padrão (Disponível globalmente)'
+                }
+                onClick={() => navigateToEdit(model.id)}
+              >
+                <td>
+                  {model.companyId && (
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className={styles.customModelIcon}
+                    />
+                  )}
+                  {model.name}
+                </td>
                 <td>{model.type}</td>
                 <td className={styles.actions}>
                   <FontAwesomeIcon
@@ -97,6 +173,10 @@ const AnamnesisModelList: React.FC = () => {
                   <FontAwesomeIcon
                     icon={faTrash}
                     className={styles.deleteIcon}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openDeleteModal(model);
+                    }}
                   />
                 </td>
               </tr>
@@ -110,6 +190,12 @@ const AnamnesisModelList: React.FC = () => {
           )}
         </tbody>
       </table>
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        itemToBeDeletedDescription={selectedModel?.name || ''}
+        onConfirm={handleDelete}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };

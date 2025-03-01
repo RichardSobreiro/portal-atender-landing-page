@@ -1,0 +1,187 @@
+/** @format */
+
+/* Form Container */
+.formContainer {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Input Fields */
+.inputRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.label {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: var(--color-primary);
+}
+
+.input {
+  font-size: var(--font-size-base);
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 4px;
+  width: 100%;
+  color: var(--color-primary);
+}
+
+.inputSelect {
+  font-size: var(--font-size-base);
+  padding: 8px;
+  border: 1px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 4px;
+  width: 100%;
+  color: var(--color-primary);
+}
+
+.inputSelect:focus {
+  outline: none;
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 4px rgba(0, 163, 122, 0.5);
+}
+
+.errorMessage {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  margin-top: 5px;
+}
+
+/* Questions Section */
+.questionsContainer {
+  background-color: var(--color-surface);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.noQuestions {
+  color: var(--color-muted-text);
+  font-size: var(--font-size-base);
+  text-align: center;
+  padding: 10px;
+}
+
+.addGroupButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Add Group Button */
+.addGroupButton {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 3px solid rgba(var(--color-primary-rgb), 0.4);
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.addGroupButton:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Save Button */
+.saveButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.saveButton {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.saveButton:hover {
+  background-color: var(--color-secondary);
+}
+
+.icon {
+  font-size: 14px;
+}
+
+.saveButtonFloatingContainer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.saveButtonFloating {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.saveButtonFloating:hover {
+  background-color: var(--color-secondary);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .saveButtonFloatingContainer {
+    bottom: 10px;
+    right: 10px;
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .inputRow {
+    flex-direction: column;
+  }
+
+  .saveButtonContainer {
+    justify-content: center;
+  }
+}

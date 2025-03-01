@@ -134,6 +134,7 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
         <button
           className={styles.addQuestionButton}
           onClick={() => onAddQuestion(groupId)}
+          type="button"
         >
           + Adicionar Pergunta
         </button>
