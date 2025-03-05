@@ -4,7 +4,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
-import CreateAnamnesis from '@/components/Anmensis/CreateAnamnesis';
+import CreateAnamnesis from '@/components/Anamnesis/CreateAnamnesis';
 
 const CriarAnamneses: NextPage = () => {
   return (

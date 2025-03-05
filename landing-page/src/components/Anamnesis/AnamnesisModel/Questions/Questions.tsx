@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import styles from './Questions.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faGripVertical } from '@fortawesome/free-solid-svg-icons';
-import YesNoQuestion from '../Questions/YesNoQuestion';
-import TextQuestion from '../Questions/TextQuestion';
-import NumberQuestion from '../Questions/NumberQuestion';
-import MultipleChoiceQuestion from '../Questions/MultipleChoiceQuestion';
-import DropdownQuestion from '../Questions/DropdownQuestion';
+import YesNoQuestion from './YesNoQuestion';
+import TextQuestion from './TextQuestion';
+import NumberQuestion from './NumberQuestion';
+import MultipleChoiceQuestion from './MultipleChoiceQuestion';
+import DropdownQuestion from './DropdownQuestion';
 import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
 import DateQuestion from './DateQuestion';
 import TextAreaQuestion from './TextAreaQuestion';
@@ -182,7 +182,7 @@ const Questions: React.FC<QuestionsProps> = ({
       {/* Delete Confirmation Modal */}
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
-        procedureName={'esta pergunta'}
+        itemToBeDeletedDescription={'esta pergunta'}
         onConfirm={() => {
           onDeleteQuestion(groupId, question.id);
           setIsDeleteModalOpen(false);

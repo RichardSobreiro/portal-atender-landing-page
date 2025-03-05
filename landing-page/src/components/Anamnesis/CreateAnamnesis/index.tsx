@@ -16,13 +16,19 @@ const CreateAnamnesis: React.FC = () => {
   const router = useRouter();
   const { showSpinner, hideSpinner } = useSpinner();
   const [anamnesisData, setAnamnesisData] = useState({
+    patientId: '',
     patientName: '',
-    anamnesisType: '',
+    anamnesisModel: '',
+    professional: '',
+    fillDate: '',
   });
 
   const handleSubmit = async (values: {
+    patientId: string;
     patientName: string;
-    anamnesisType: string;
+    anamnesisModel: string;
+    professional: string;
+    fillDate: string;
   }) => {
     showSpinner();
     try {

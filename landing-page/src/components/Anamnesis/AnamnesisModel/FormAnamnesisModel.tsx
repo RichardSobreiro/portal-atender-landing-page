@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import styles from './FormAnamnesisModel.module.css';

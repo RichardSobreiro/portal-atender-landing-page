@@ -4,7 +4,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
-import AnamnesisModelList from '@/components/Anmensis/AnamnesisModel/AnamnesisModelList';
+import AnamnesisModelList from '@/components/Anamnesis/AnamnesisModel/AnamnesisModelList';
 
 const ModelosAnamneses: NextPage = () => {
   return (

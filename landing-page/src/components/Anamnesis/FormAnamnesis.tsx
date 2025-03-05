@@ -2,12 +2,46 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './FormAnamnesis.module.css';
-import { Field, Formik, Form } from 'formik';
+import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import axiosInstance from '@/services/axiosInstance';
 import { formatPhoneNumber } from '@/general/Formatters';
+import FormAnamnesisResponses from './FormAnamnesisResponses';
+
+export interface OptionDto {
+  id: string;
+  text: string;
+}
+
+export interface QuestionDto {
+  id: string;
+  text: string;
+  type:
+    | 'yesno'
+    | 'text'
+    | 'number'
+    | 'multiple_choice'
+    | 'dropdown'
+    | 'date'
+    | 'textarea';
+  required: boolean;
+  options?: OptionDto[];
+}
+
+export interface QuestionGroupDto {
+  id: string;
+  name: string;
+  questions: QuestionDto[];
+}
+
+export interface AnamnesisModelDto {
+  id: string;
+  name: string;
+  type: string;
+  groups: QuestionGroupDto[];
+}
 
 interface Patient {
   id: string;
@@ -23,8 +57,6 @@ interface FormAnamnesisProps {
     professional: string;
     fillDate: string;
   };
-  anamnesisModels?: { id: string; name: string }[];
-  professionals?: { id: string; name: string }[];
   handleSubmit: (values: {
     patientId: string;
     patientName: string;
@@ -36,14 +68,44 @@ interface FormAnamnesisProps {
 
 const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
   initialValues,
-  anamnesisModels = [],
-  professionals = [],
   handleSubmit,
 }) => {
   const [searchResults, setSearchResults] = useState<Patient[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<string | null>(null);
+  const [anamnesisModelTypes, setAnamnesisModelTypes] = useState<
+    { id: string; name: string; type: string }[]
+  >([]);
+  const [users, setUsers] = useState<{ id: string; name: string }[]>([]);
+  const [selectedAnamnesisModel, setSelectedAnamnesisModel] =
+    useState<AnamnesisModelDto | null>(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axiosInstance.get('/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar usuários:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    const fetchAnamnesisModels = async () => {
+      try {
+        const response = await axiosInstance.get('/anamnesis-models/search');
+        setAnamnesisModelTypes(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar os modelos de anamnese:', error);
+      }
+    };
+
+    fetchAnamnesisModels();
+  }, []);
 
   // Function to fetch patients based on search term
   const fetchPatients = useCallback(async (query: string) => {
@@ -77,10 +139,13 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
   const validationSchema = Yup.object({
     patientName: Yup.string().required('O nome do cliente é obrigatório'),
     anamnesisModel: Yup.string().required('Selecione um modelo de anamnese'),
-    professional: Yup.string().required('Selecione um profissional'),
+    professional: Yup.string().nullable(), // ✅ Now optional
     fillDate: Yup.string()
-      .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'Data inválida (DD/MM/YYYY)')
-      .nullable(),
+      .required('A data de preenchimento é obrigatória') // ✅ Must not be empty
+      .matches(
+        /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+        'Data inválida (DD/MM/YYYY)'
+      ), // ✅ Ensures a valid DD/MM/YYYY format
   });
 
   // Function to apply date mask dynamically (Allows full deletion)
@@ -97,22 +162,39 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
     return formattedValue;
   };
 
+  const fetchAnamnesisModel = async (modelId: string) => {
+    try {
+      const response = await axiosInstance.get(`/anamnesis-models/${modelId}`);
+      setSelectedAnamnesisModel(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do modelo de anamnese:', error);
+      setSelectedAnamnesisModel(null);
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+      validateOnBlur
+      validateOnChange
+      onSubmit={(values, { validateForm, setSubmitting }) => {
+        validateForm(values).then((errors) => {
+          if (Object.keys(errors).length === 0) {
+            handleSubmit(values);
+          }
+          setSubmitting(false);
+        });
+      }}
     >
       {({ values, setFieldValue }) => (
-        <Form className={styles.formContainer}>
+        <Form id="anamnesisForm" className={styles.formContainer}>
           {/* DADOS BÁSICOS */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Dados Básicos</h2>
             <div className={styles.inputRow}>
               <div className={styles.inputGroup}>
-                <label className={styles.label}>
-                  Cliente <span className={styles.required}>*</span>
-                </label>
+                <label className={styles.label}>Cliente</label>
                 <div className={styles.searchWrapper}>
                   <Field
                     type="text"
@@ -125,6 +207,11 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
                       setSelectedPatient(null); // Allow changing patient
                       setFieldValue('patientName', e.target.value);
                     }}
+                  />
+                  <ErrorMessage
+                    name="patientName"
+                    component="div"
+                    className={styles.errorMessage}
                   />
                   {loading && (
                     <FontAwesomeIcon
@@ -161,36 +248,42 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>
-                  Modelo de Anamnese <span className={styles.required}>*</span>
-                </label>
+                <label className={styles.label}>Modelo de Anamnese</label>
                 <Field
                   as="select"
                   name="anamnesisModel"
                   className={styles.select}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    const modelId = e.target.value;
+                    setFieldValue('anamnesisModel', modelId);
+                    if (modelId) fetchAnamnesisModel(modelId);
+                  }}
                 >
                   <option value="">Selecione um modelo</option>
-                  {anamnesisModels?.map((model) => (
+                  {anamnesisModelTypes.map((model) => (
                     <option key={model.id} value={model.id}>
                       {model.name}
                     </option>
                   ))}
                 </Field>
+                <ErrorMessage
+                  name="anamnesisModel"
+                  component="div"
+                  className={styles.errorMessage}
+                />
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>
-                  Profissional <span className={styles.required}>*</span>
-                </label>
+                <label className={styles.label}>Profissional</label>
                 <Field
                   as="select"
                   name="professional"
                   className={styles.select}
                 >
                   <option value="">Selecione um profissional</option>
-                  {professionals?.map((professional) => (
-                    <option key={professional.id} value={professional.id}>
-                      {professional.name}
+                  {users.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}
                     </option>
                   ))}
                 </Field>
@@ -199,10 +292,7 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
 
             <div className={styles.inputRow}>
               <div className={`${styles.inputGroup} ${styles.dateGroup}`}>
-                <label className={styles.label}>
-                  Data de Preenchimento{' '}
-                  <span className={styles.required}>*</span>
-                </label>
+                <label className={styles.label}>Data de Preenchimento </label>
                 <div className={styles.datePickerWrapper}>
                   <Field
                     type="text"
@@ -219,6 +309,11 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
                     className={styles.calendarIcon}
                   />
                 </div>
+                <ErrorMessage
+                  name="fillDate"
+                  component="div"
+                  className={styles.errorMessage}
+                />
               </div>
             </div>
           </div>
@@ -226,9 +321,7 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
           {/* RESPOSTAS */}
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Respostas</h2>
-            <p className={styles.placeholder}>
-              A seção de perguntas será implementada futuramente.
-            </p>
+            <FormAnamnesisResponses anamnesisModel={selectedAnamnesisModel} />
           </div>
 
           <button type="submit" className={styles.saveButton}>

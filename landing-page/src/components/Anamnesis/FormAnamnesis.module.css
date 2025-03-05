@@ -171,3 +171,9 @@
   font-size: var(--font-size-xsm);
   color: var(--color-text);
 }
+
+.errorMessage {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  margin-top: 5px;
+}

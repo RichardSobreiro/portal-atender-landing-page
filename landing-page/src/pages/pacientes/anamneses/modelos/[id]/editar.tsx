@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
-import EditAnamnesisModel from '@/components/Anmensis/AnamnesisModel/EditAnamnesisModel';
+import EditAnamnesisModel from '@/components/Anamnesis/AnamnesisModel/EditAnamnesisModel';
 
 const EditarAnamnese: NextPage = () => {
   const router = useRouter();

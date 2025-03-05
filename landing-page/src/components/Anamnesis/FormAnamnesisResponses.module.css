@@ -1,0 +1,86 @@
+.responsesContainer {
+  margin-top: 20px;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.noQuestions {
+  color: var(--color-muted-text);
+  text-align: center;
+  font-size: var(--font-size-base);
+}
+
+.questionGroup {
+  background: var(--color-surface);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.groupTitle {
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.question {
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  font-weight: bold;
+}
+
+.required {
+  color: var(--color-accent);
+}
+
+.input,
+.textarea,
+.select {
+  font-size: var(--font-size-base);
+  padding: 8px;
+  border: 1px solid var(--color-muted-text);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.textarea {
+  resize: vertical;
+  height: 80px;
+}
+
+.radioGroup,
+.checkboxGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.radioLabel,
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.radio,
+.checkbox {
+  margin-right: 5px;
+}
+
+.errorMessage {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  margin-top: 5px;
+}
