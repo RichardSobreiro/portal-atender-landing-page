@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useState } from 'react';
-import * as Yup from 'yup';
 import styles from './CreateAnamnesisModel.module.css';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
@@ -31,9 +30,15 @@ interface QuestionGroup {
 const CreateAnamnesisModel: React.FC = () => {
   const router = useRouter();
   const { showSpinner, hideSpinner } = useSpinner();
-  const [anamnesisForm, setAnamnesisForm] = useState({
+  const [anamnesisForm, setAnamnesisForm] = useState<{
+    name: string;
+    type: string;
+    companyId: string | null | undefined;
+    groups: QuestionGroup[];
+  }>({
     name: '',
     type: '',
+    companyId: null,
     groups: [] as QuestionGroup[],
   });
 

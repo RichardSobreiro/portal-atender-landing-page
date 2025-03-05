@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Questions from './Questions';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
+import { useState } from 'react';
 
 interface Question {
   id: string;
@@ -63,6 +65,12 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
   onUpdateOption,
   onRemoveOption,
 }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
   const handleDragEnd = (result: any) => {
     if (!result.destination) return; // If dropped outside the list, do nothing
     onReorderQuestions(groupId, result.source.index, result.destination.index);
@@ -80,8 +88,9 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
           className={styles.groupNameInput}
         />
         <button
+          type="button"
           className={styles.deleteGroupButton}
-          onClick={() => onDeleteGroup(groupId)}
+          onClick={openDeleteModal}
         >
           <FontAwesomeIcon icon={faTrash} />
         </button>
@@ -139,6 +148,12 @@ const QuestionsGroup: React.FC<QuestionsGroupProps> = ({
           + Adicionar Pergunta
         </button>
       </div>
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        itemToBeDeletedDescription={name}
+        onConfirm={() => onDeleteGroup(groupId)}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };

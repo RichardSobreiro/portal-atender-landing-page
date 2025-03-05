@@ -37,10 +37,12 @@ const EditAnamnesisModel: React.FC<{ anamnesisModelId: string }> = ({
   const [anamnesisForm, setAnamnesisForm] = useState<{
     name: string;
     type: string;
+    companyId: string | null | undefined;
     groups: QuestionGroup[];
   }>({
     name: '',
     type: '',
+    companyId: null,
     groups: [],
   });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -126,11 +128,20 @@ const EditAnamnesisModel: React.FC<{ anamnesisModelId: string }> = ({
     showSpinner();
     try {
       const payload = { ...values, groups: anamnesisForm.groups };
-      await axiosInstance.patch(
+      const response = await axiosInstance.patch(
         `/anamnesis-models/${anamnesisModelId}`,
         payload
       );
-      toast.success('Modelo de anamnese atualizado com sucesso!');
+      const returnedAnamnesisModelId = response.data.id;
+
+      if (returnedAnamnesisModelId !== anamnesisModelId) {
+        router.push({
+          pathname: `/pacientes/anamneses/modelos/${returnedAnamnesisModelId}/editar`,
+          query: { success: 'true', info: 'true' },
+        });
+      } else {
+        toast.success('Modelo de anamnese atualizado com sucesso!');
+      }
     } catch (error: any) {
       console.error('Erro ao atualizar modelo:', error);
       const errorMessages = error.response?.data?.message;
@@ -185,15 +196,17 @@ const EditAnamnesisModel: React.FC<{ anamnesisModelId: string }> = ({
 
         <h2 className={styles.titlePage}>Editar Modelo de Anamnese</h2>
 
-        <button
-          id="headerDeleteButton"
-          type="button"
-          className={styles.deleteButtonHeader} // ✅ Update CSS class
-          onClick={openDeleteModal} // ✅ Open modal on click
-        >
-          <FontAwesomeIcon icon={faTrash} className={styles.icon} />
-          <span>Excluir</span>
-        </button>
+        {anamnesisForm.companyId && (
+          <button
+            id="headerDeleteButton"
+            type="button"
+            className={styles.deleteButtonHeader} // ✅ Update CSS class
+            onClick={openDeleteModal} // ✅ Open modal on click
+          >
+            <FontAwesomeIcon icon={faTrash} className={styles.icon} />
+            <span>Excluir</span>
+          </button>
+        )}
       </div>
 
       {!loading ? (

@@ -1,0 +1,83 @@
+/** @format */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Header Section */
+.titleContainer {
+  background-color: var(--color-surface);
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.titlePage {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+}
+
+.backButton {
+  background-color: var(--color-muted-text);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.backButton:hover {
+  background-color: var(--color-primary);
+}
+
+.saveButtonHeader {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.saveButtonHeader:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .titleContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .backButton,
+  .saveButtonHeader {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -30,7 +30,10 @@ const menuItems = [
     label: 'Pacientes',
     link: '/pacientes',
     icon: faUserInjured,
-    subItems: [{ label: 'Anamneses', link: '/pacientes/anamneses/modelos' }],
+    subItems: [
+      { label: 'Anamneses', link: '/pacientes/anamneses' },
+      { label: 'Modelos de Anamneses', link: '/pacientes/anamneses/modelos' },
+    ],
   },
   {
     label: 'Calendário',

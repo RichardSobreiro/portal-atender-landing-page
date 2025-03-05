@@ -1,6 +1,7 @@
 /** @format */
 import DeleteConfirmationModal from '@/general/DeleteConfirmationModal';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import ConfirmationModal from '@/general/ConfirmationModal';
 import styles from './AnamnesisModelList.module.css';
 import axiosInstance from '@/services/axiosInstance';
 import { useSpinner } from '@/context/SpinnerContext';
@@ -34,6 +35,7 @@ const AnamnesisModelList: React.FC = () => {
   const [selectedModel, setSelectedModel] = useState<AnamnesisModel | null>(
     null
   );
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -74,10 +76,6 @@ const AnamnesisModelList: React.FC = () => {
     router.push('/pacientes/anamneses/modelos/novo');
   };
 
-  const navigateToEdit = (id: string) => {
-    router.push(`/pacientes/anamneses/modelos/${id}/editar`);
-  };
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -110,6 +108,15 @@ const AnamnesisModelList: React.FC = () => {
       hideSpinner();
       setIsDeleteModalOpen(false);
       setSelectedModel(null);
+    }
+  };
+
+  const openEditModal = (model: AnamnesisModel) => {
+    if (!model.companyId) {
+      setSelectedModel(model);
+      setIsEditModalOpen(true);
+    } else {
+      router.push(`/pacientes/anamneses/modelos/${model.id}/editar`);
     }
   };
 
@@ -152,7 +159,7 @@ const AnamnesisModelList: React.FC = () => {
                     ? 'Modelo personalizado (Criado pela sua empresa)'
                     : 'Modelo padrão (Disponível globalmente)'
                 }
-                onClick={() => navigateToEdit(model.id)}
+                onClick={() => openEditModal(model)}
               >
                 <td>
                   {model.companyId && (
@@ -168,16 +175,18 @@ const AnamnesisModelList: React.FC = () => {
                   <FontAwesomeIcon
                     icon={faEdit}
                     className={styles.editIcon}
-                    onClick={() => navigateToEdit(model.id)}
+                    onClick={() => openEditModal(model)}
                   />
-                  <FontAwesomeIcon
-                    icon={faTrash}
-                    className={styles.deleteIcon}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openDeleteModal(model);
-                    }}
-                  />
+                  {model.companyId && (
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      className={styles.deleteIcon}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openDeleteModal(model);
+                      }}
+                    />
+                  )}
                 </td>
               </tr>
             ))
@@ -195,6 +204,31 @@ const AnamnesisModelList: React.FC = () => {
         itemToBeDeletedDescription={selectedModel?.name || ''}
         onConfirm={handleDelete}
         onCancel={() => setIsDeleteModalOpen(false)}
+      />
+      <ConfirmationModal
+        isOpen={isEditModalOpen}
+        title="Aviso"
+        message={
+          <>
+            O modelo de anamnese <strong>"{selectedModel?.name}"</strong> é um
+            modelo padrão e não pode ser editado diretamente.
+            <br />
+            Se você prosseguir, será criado um novo modelo personalizado para
+            sua empresa.
+            <br />
+            <br />O novo modelo será exibido na lista com o seguinte ícone ao
+            lado do nome:{' '}
+            <FontAwesomeIcon icon={faUser} className={styles.customModelIcon} />
+          </>
+        }
+        confirmButtonText="Ok, entendi"
+        cancelButtonText="Cancelar"
+        onConfirm={() =>
+          router.push(
+            `/pacientes/anamneses/modelos/${selectedModel?.id}/editar`
+          )
+        }
+        onCancel={() => setIsEditModalOpen(false)}
       />
     </div>
   );

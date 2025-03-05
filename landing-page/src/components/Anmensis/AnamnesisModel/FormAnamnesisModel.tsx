@@ -30,6 +30,7 @@ interface FormAnamnesisModelProps {
     React.SetStateAction<{
       name: string;
       type: string;
+      companyId: string | null | undefined;
       groups: QuestionGroup[];
     }>
   >;
