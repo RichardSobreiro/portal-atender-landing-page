@@ -5,7 +5,11 @@ import styles from './FormAnamnesis.module.css';
 import { Field, Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCalendar,
+  faSpinner,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import axiosInstance from '@/services/axiosInstance';
 import { formatPhoneNumber } from '@/general/Formatters';
 import FormAnamnesisResponses from './FormAnamnesisResponses';
@@ -75,11 +79,13 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
   const [loading, setLoading] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<string | null>(null);
   const [anamnesisModelTypes, setAnamnesisModelTypes] = useState<
-    { id: string; name: string; type: string }[]
+    { id: string; name: string; type: string; companyId: string | null }[]
   >([]);
   const [users, setUsers] = useState<{ id: string; name: string }[]>([]);
   const [selectedAnamnesisModel, setSelectedAnamnesisModel] =
     useState<AnamnesisModelDto | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -249,23 +255,58 @@ const FormAnamnesis: React.FC<FormAnamnesisProps> = ({
 
               <div className={styles.inputGroup}>
                 <label className={styles.label}>Modelo de Anamnese</label>
-                <Field
-                  as="select"
-                  name="anamnesisModel"
-                  className={styles.select}
-                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                    const modelId = e.target.value;
-                    setFieldValue('anamnesisModel', modelId);
-                    if (modelId) fetchAnamnesisModel(modelId);
-                  }}
+                <div
+                  className={styles.dropdownContainer}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <option value="">Selecione um modelo</option>
-                  {anamnesisModelTypes.map((model) => (
-                    <option key={model.id} value={model.id}>
-                      {model.name}
-                    </option>
-                  ))}
-                </Field>
+                  <div className={styles.dropdownSelected}>
+                    {selectedModel ? (
+                      <>
+                        {anamnesisModelTypes.find(
+                          (model) => model.id === selectedModel
+                        )?.companyId && (
+                          <FontAwesomeIcon
+                            icon={faUser}
+                            className={styles.userIcon}
+                          />
+                        )}
+                        {anamnesisModelTypes.find(
+                          (model) => model.id === selectedModel
+                        )?.name || 'Selecione um modelo'}
+                      </>
+                    ) : (
+                      'Selecione um modelo'
+                    )}
+                  </div>
+                  {isDropdownOpen && (
+                    <ul className={styles.dropdownList}>
+                      {anamnesisModelTypes.map((model) => (
+                        <li
+                          key={model.id}
+                          className={styles.dropdownItem}
+                          onClick={() => {
+                            setSelectedModel(model.id);
+                            setFieldValue('anamnesisModel', model.id);
+                            setIsDropdownOpen(false);
+                            if (model.id) fetchAnamnesisModel(model.id);
+                          }}
+                        >
+                          {model.companyId ? (
+                            <>
+                              <FontAwesomeIcon
+                                icon={faUser}
+                                className={styles.userIcon}
+                              />{' '}
+                              {model.name}
+                            </>
+                          ) : (
+                            model.name
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
                 <ErrorMessage
                   name="anamnesisModel"
                   component="div"

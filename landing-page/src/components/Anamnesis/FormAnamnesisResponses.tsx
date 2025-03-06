@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './FormAnamnesisResponses.module.css';
-import { Field, ErrorMessage, FormikProps } from 'formik';
+import { Field, ErrorMessage } from 'formik';
 import { AnamnesisModelDto } from './FormAnamnesis';
 
 interface FormAnamnesisResponsesProps {
@@ -14,8 +14,6 @@ const FormAnamnesisResponses: React.FC<FormAnamnesisResponsesProps> = ({
 }) => {
   return (
     <div className={styles.responsesContainer}>
-      <h2 className={styles.sectionTitle}>Respostas</h2>
-
       {!anamnesisModel || anamnesisModel.groups.length === 0 ? (
         <p className={styles.noQuestions}>Nenhuma pergunta disponível.</p>
       ) : (
