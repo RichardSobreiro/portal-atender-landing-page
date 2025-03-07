@@ -4,8 +4,12 @@ import React from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
+import { useRouter } from 'next/router';
+import EditAnamnesis from '@/components/Anamnesis/EditAnamnesis';
 
 const EditarAnamneses: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <>
       <Head>
@@ -36,7 +40,9 @@ const EditarAnamneses: NextPage = () => {
         <link rel="canonical" href="https://portalatender.com.br/"></link>
         <meta name="language" content="pt-BR" />
       </Head>
-      <Layout renderSideMenu={true}></Layout>
+      <Layout renderSideMenu={true}>
+        <EditAnamnesis anamnesisId={id as string} />
+      </Layout>
     </>
   );
 };

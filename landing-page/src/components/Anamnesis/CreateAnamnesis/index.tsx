@@ -32,12 +32,22 @@ const CreateAnamnesis: React.FC = () => {
   }) => {
     showSpinner();
     try {
-      await axiosInstance.post('/anamnesis', values);
-      toast.success('Anamnese criada com sucesso!');
-      router.push('/pacientes/anamneses');
-    } catch (error) {
-      toast.error('Erro ao criar anamnese.');
-      console.error(error);
+      const response = await axiosInstance.post('/anamnesis', values);
+      const anamnesisId = response.data.id;
+      router.push({
+        pathname: `/pacientes/anamneses/${anamnesisId}/editar`,
+        query: { success: 'true' },
+      });
+    } catch (error: any) {
+      console.error('Erro ao criar anamnese:', error);
+      const errorMessages = error.response?.data?.message;
+
+      if (Array.isArray(errorMessages)) {
+        errorMessages.forEach((msg) => toast.error(msg));
+      } else {
+        const errorMessage = errorMessages || 'Ocorreu um erro inesperado.';
+        toast.error(errorMessage);
+      }
     } finally {
       hideSpinner();
     }

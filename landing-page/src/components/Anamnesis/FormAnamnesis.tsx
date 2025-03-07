@@ -31,6 +31,7 @@ export interface QuestionDto {
     | 'date'
     | 'textarea';
   required: boolean;
+  order: number;
   options?: OptionDto[];
 }
 
